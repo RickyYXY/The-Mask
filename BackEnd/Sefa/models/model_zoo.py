@@ -301,6 +301,7 @@ MODEL_ZOO = {
     'styleganinv_ffhq256_generator': dict(
         gan_type='stylegan_inv',
         resolution=256,
+        model_name='styleganinv_ffhq256',
         url=''
     )
 }

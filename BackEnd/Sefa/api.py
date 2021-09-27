@@ -25,12 +25,13 @@ def synthesize(generator, gan_type, codes):
 
 
 def code_to_img_api(code, layer_idx, num_semantics, step,
-                    start_distance=-3, end_distance=3, step_num=11, model_name='pggan_celebahq1024'):
+                    start_distance=-3, end_distance=3, step_num=11, model_name='styleganinv_ffhq256'):
     """
     code: code for img
     layer_idx: 'all', '0-1', '2-5', '6-13'
     num_semantics: count of the chosen semantics
-    step: the value index of distance(0~10), depend on step_num
+    step: List, the value indexs of distance(0~10), depend on step_num
+    return: numpy imgs N*H*W*C
     """
     generator = load_generator(model_name)
     gan_type = parse_gan_type(generator)
@@ -42,7 +43,7 @@ def code_to_img_api(code, layer_idx, num_semantics, step,
     temp_code = code.copy()
     for sem_id in tqdm(range(num_sem), desc='Semantic ', leave=False):
         boundary = boundaries[sem_id:sem_id + 1]
-        d = distances[step]
+        d = distances[step[sem_id]]
         if gan_type == 'pggan':
             temp_code += boundary * d
         elif gan_type in ['stylegan', 'stylegan2']:

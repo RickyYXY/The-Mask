@@ -15,7 +15,7 @@ from models import parse_gan_type
 __all__ = ['postprocess', 'load_generator', 'factorize_weight',
            'HtmlPageVisualizer']
 
-CHECKPOINT_DIR = 'checkpoints'
+CHECKPOINT_DIR = 'Sefa/checkpoints'
 
 
 def to_tensor(array):
@@ -166,7 +166,7 @@ def factorize_weight(generator, layer_idx='all'):
     # Get layers.
     if gan_type == 'pggan':
         layers = [0]
-    elif gan_type in ['stylegan', 'stylegan2']:
+    elif gan_type in ['stylegan', 'stylegan2', 'stylegan_inv']:
         if layer_idx == 'all':
             layers = list(range(generator.num_layers))
         else:
@@ -185,6 +185,8 @@ def factorize_weight(generator, layer_idx='all'):
             weight = weight.flip(2, 3).permute(1, 0, 2, 3).flatten(1)
         elif gan_type in ['stylegan', 'stylegan2']:
             weight = generator.synthesis.__getattr__(layer_name).style.weight.T
+        elif gan_type == 'stylegan_inv':
+            weight = generator.net.synthesis.__getattr__(layer_name).style.weight.T
         weights.append(weight.cpu().detach().numpy())
     weight = np.concatenate(weights, axis=1).astype(np.float32)
     weight = weight / np.linalg.norm(weight, axis=0, keepdims=True)
