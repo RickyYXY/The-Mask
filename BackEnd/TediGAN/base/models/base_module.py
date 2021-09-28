@@ -121,6 +121,7 @@ class BaseModule(object):
     self.build()
     if os.path.isfile(self.weight_path):
       self.load()
+      print("Successfully load model.")
     else:
       self.logger.warning(f'No pre-trained weights will be loaded!')
 

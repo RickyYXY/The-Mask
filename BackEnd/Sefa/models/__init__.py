@@ -16,7 +16,7 @@ __all__ = [
     'build_generator', 'build_discriminator', 'build_model'
 ]
 
-_GAN_TYPES_ALLOWED = ['pggan', 'stylegan', 'stylegan2']
+_GAN_TYPES_ALLOWED = ['pggan', 'stylegan', 'stylegan2', 'stylegan_inv']
 _MODULES_ALLOWED = ['generator', 'discriminator']
 
 

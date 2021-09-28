@@ -15,7 +15,7 @@ from models import parse_gan_type
 __all__ = ['postprocess', 'load_generator', 'factorize_weight',
            'HtmlPageVisualizer']
 
-CHECKPOINT_DIR = 'Sefa/checkpoints'
+CHECKPOINT_DIR = 'Sefa\\checkpoints'
 
 
 def to_tensor(array):
@@ -42,8 +42,9 @@ def postprocess(images, min_val=-1.0, max_val=1.0):
     Returns:
         A `numpy.ndarray` with shape `NHWC` and pixel range [0, 255].
     """
-    assert isinstance(images, torch.Tensor)
-    images = images.detach().cpu().numpy()
+    if isinstance(images, torch.Tensor):
+        images = images.detach().cpu().numpy()
+    assert isinstance(images, np.ndarray)
     images = (images - min_val) * 255 / (max_val - min_val)
     images = np.clip(images + 0.5, 0, 255).astype(np.uint8)
     images = images.transpose(0, 2, 3, 1)
@@ -73,22 +74,25 @@ def load_generator(model_name):
     print(f'Building generator for model `{model_name}` ...')
     generator = build_generator(**model_config)
     print(f'Finish building generator.')
+    gan_type = parse_gan_type(generator)
 
-    # Load pre-trained weights.
-    os.makedirs(CHECKPOINT_DIR, exist_ok=True)
-    checkpoint_path = os.path.join(CHECKPOINT_DIR, model_name + '.pth')
-    print(f'Loading checkpoint from `{checkpoint_path}` ...')
-    if not os.path.exists(checkpoint_path):
-        print(f'  Downloading checkpoint from `{url}` ...')
-        subprocess.call(['wget', '--quiet', '-O', checkpoint_path, url])
-        print(f'  Finish downloading checkpoint.')
-    checkpoint = torch.load(checkpoint_path, map_location='cpu')
-    if 'generator_smooth' in checkpoint:
-        generator.load_state_dict(checkpoint['generator_smooth'])
-    else:
-        generator.load_state_dict(checkpoint['generator'])
-    generator = generator.cuda()
-    generator.eval()
+    # stylegan_inv会自动设置
+    if gan_type != 'stylegan_inv':
+        # Load pre-trained weights.
+        os.makedirs(CHECKPOINT_DIR, exist_ok=True)
+        checkpoint_path = os.path.join(CHECKPOINT_DIR, model_name + '.pth')
+        print(f'Loading checkpoint from `{checkpoint_path}` ...')
+        if not os.path.exists(checkpoint_path):
+            print(f'  Downloading checkpoint from `{url}` ...')
+            subprocess.call(['wget', '--quiet', '-O', checkpoint_path, url])
+            print(f'  Finish downloading checkpoint.')
+        checkpoint = torch.load(checkpoint_path, map_location='cpu')
+        if 'generator_smooth' in checkpoint:
+            generator.load_state_dict(checkpoint['generator_smooth'])
+        else:
+            generator.load_state_dict(checkpoint['generator'])
+        generator = generator.cuda()
+        generator.eval()
     print(f'Finish loading checkpoint.')
     return generator
 
@@ -186,7 +190,8 @@ def factorize_weight(generator, layer_idx='all'):
         elif gan_type in ['stylegan', 'stylegan2']:
             weight = generator.synthesis.__getattr__(layer_name).style.weight.T
         elif gan_type == 'stylegan_inv':
-            weight = generator.net.synthesis.__getattr__(layer_name).style.weight.T
+            weight = generator.net.synthesis.__getattr__(
+                layer_name).epilogue.style_mod.dense.fc.weight.T
         weights.append(weight.cpu().detach().numpy())
     weight = np.concatenate(weights, axis=1).astype(np.float32)
     weight = weight / np.linalg.norm(weight, axis=0, keepdims=True)

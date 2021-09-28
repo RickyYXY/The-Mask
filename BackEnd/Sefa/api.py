@@ -20,12 +20,28 @@ def synthesize(generator, gan_type, codes):
         images = generator(to_tensor(codes))['image']
     elif gan_type in ['stylegan', 'stylegan2']:
         images = generator.synthesis(to_tensor(codes))['image']
+    elif gan_type=='stylegan_inv':
+        images = generator.synthesize(codes)['image']
     images = postprocess(images)
     return images
 
 
-def code_to_img_api(code, layer_idx, num_semantics, step,
-                    start_distance=-3, end_distance=3, step_num=11, model_name='styleganinv_ffhq256'):
+def sample(generator, gan_type, codes):
+    """Samples latent codes."""
+    if gan_type == 'pggan':
+        codes = generator.layer0.pixel_norm(codes)
+    elif gan_type == 'stylegan':
+        codes = generator.mapping(codes)['w']
+        codes = generator.truncation(codes, trunc_psi=0.7, trunc_layers=8)
+    elif gan_type == 'stylegan2':
+        codes = generator.mapping(codes)['w']
+        codes = generator.truncation(codes, trunc_psi=0.5, trunc_layers=18)
+    codes = codes.detach().cpu().numpy()
+    return codes
+
+
+def code_to_img_api(codes, layer_idx, num_semantics, step,
+                    start_distance=-3, end_distance=3, step_num=11, model_name='styleganinv_ffhq256_generator'):
     """
     code: code for img
     layer_idx: 'all', '0-1', '2-5', '6-13'
@@ -40,7 +56,8 @@ def code_to_img_api(code, layer_idx, num_semantics, step,
     distances = np.linspace(start_distance, end_distance, step_num)
     num_sem = num_semantics
 
-    temp_code = code.copy()
+    codes = sample(generator, gan_type, codes)
+    temp_code = codes.copy()
     for sem_id in tqdm(range(num_sem), desc='Semantic ', leave=False):
         boundary = boundaries[sem_id:sem_id + 1]
         d = distances[step[sem_id]]

@@ -5,7 +5,8 @@ import os.path
 
 BASE_DIR = os.path.dirname(os.path.relpath(__file__))
 
-MODEL_DIR = os.path.join(BASE_DIR, 'pretrain')
+# MODEL_DIR = os.path.join(BASE_DIR, 'Sefa\\pretrain')
+MODEL_DIR = 'Sefa\\pretrain'
 
 MODEL_POOL = {
     'styleganinv_ffhq256': {
