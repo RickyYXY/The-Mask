@@ -2,10 +2,7 @@ from torch.random import seed
 from api import *
 import numpy as np
 import torch
-import io
-import IPython.display
 import cv2
-import PIL.Image
 
 
 def imshow(images, col, viz_size=256):
@@ -26,11 +23,13 @@ def imshow(images, col, viz_size=256):
         fused_image[y:y + viz_size, x:x + viz_size] = image
 
     fused_image = np.asarray(fused_image, dtype=np.uint8)
-    data = io.BytesIO()
-    PIL.Image.fromarray(fused_image).save(data, 'jpeg')
-    im_data = data.getvalue()
-    disp = IPython.display.display(IPython.display.Image(im_data))
-    return disp
+    cv2.imshow("test_imgs", fused_image)
+    cv2.waitKey(0)
+    # data = io.BytesIO()
+    # PIL.Image.fromarray(fused_image).save(data, 'jpeg')
+    # im_data = data.getvalue()
+    # disp = IPython.display.display(IPython.display.Image(im_data))
+    # return disp
 
 
 seed = 0

@@ -14,14 +14,16 @@ from utils import load_generator
 from utils import factorize_weight
 
 
-def synthesize(generator, gan_type, codes):
+def synthesize(generator, gan_type, codes, sefa_usage=None):
     """Synthesizes images with the give codes."""
     if gan_type == 'pggan':
         images = generator(to_tensor(codes))['image']
     elif gan_type in ['stylegan', 'stylegan2']:
         images = generator.synthesis(to_tensor(codes))['image']
-    elif gan_type=='stylegan_inv':
-        images = generator.synthesize(codes)['image']
+    elif gan_type == 'stylegan_inv':
+        # 默认为z_type
+        images = generator.synthesize(
+            codes, sefa_usage, latent_space_type='z')['image']
     images = postprocess(images)
     return images
 
@@ -56,14 +58,24 @@ def code_to_img_api(codes, layer_idx, num_semantics, step,
     distances = np.linspace(start_distance, end_distance, step_num)
     num_sem = num_semantics
 
-    codes = sample(generator, gan_type, codes)
-    temp_code = codes.copy()
-    for sem_id in tqdm(range(num_sem), desc='Semantic ', leave=False):
-        boundary = boundaries[sem_id:sem_id + 1]
-        d = distances[step[sem_id]]
-        if gan_type == 'pggan':
-            temp_code += boundary * d
-        elif gan_type in ['stylegan', 'stylegan2']:
-            temp_code[:, layers, :] += boundary * d
-    new_images = synthesize(generator, gan_type, temp_code)
+    if gan_type != "stylegan_inv":
+        temp_codes = sample(generator, gan_type, codes)
+        for sem_id in tqdm(range(num_sem), desc='Semantic ', leave=False):
+            boundary = boundaries[sem_id:sem_id + 1]
+            d = distances[step[sem_id]]
+            if gan_type == 'pggan':
+                temp_codes += boundary * d
+            elif gan_type in ['stylegan', 'stylegan2']:
+                temp_codes[:, layers, :] += boundary * d
+        new_images = synthesize(generator, gan_type, temp_codes)
+    else:
+        temp_codes = codes.detach().cpu().numpy()
+        sefa_usage = {
+            'step': step,
+            'num_sem': num_sem,
+            'distances': distances,
+            'boundaries': boundaries,
+            'layers': layers
+        }
+        new_images = synthesize(generator, gan_type, temp_codes, sefa_usage)
     return new_images
