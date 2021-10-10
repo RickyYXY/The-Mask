@@ -1,11 +1,6 @@
 import os
 import sys
 sys.path.append('TediGAN')
-# sys.path.insert(0, os.path.join(sys.path[0],'TediGAN', 'base'))
-# sys.path.insert(0, os.path.join('TediGAN'))
-# sys.path.append(os.path.join('TediGAN', 'base'))
-# sys.path.append(os.path.join('TediGAN', 'base', 'models'))
-# sys.path.append(os.path.join('TediGAN', 'base', 'utils'))
 
 
 import clip
@@ -50,14 +45,14 @@ def ImageEdit(image_path=None, description=None):
         image = inverter.preprocess(image_path)
         return inverter.get_init_code(image), image
 
-    image_size = inverter.G.resolution
+    if image_path is None:
+        z, viz_results = inverter.invert(None)
+    else:
+        image_size = inverter.G.resolution
+        image = Image.open(image_path)
 
-    text_inputs = torch.cat([clip.tokenize(description)]).cuda()
-    # Invert images.
-    # uploaded_file = uploaded_file.read()
-    image = Image.open(image_path)
-    image = resize_image(np.array(image), (image_size, image_size))
-    z, viz_results = inverter.easy_invert(image, 1)
+        image = resize_image(np.array(image), (image_size, image_size))
+        z, viz_results = inverter.easy_invert(image, 1)
 
     return z, viz_results[-1]
 
