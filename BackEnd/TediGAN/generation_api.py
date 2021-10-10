@@ -63,4 +63,3 @@ def save_code(code, path='tmp_codes'):
 
 
 # latant_code, fixed_image = ImageEdit(image_path=img_file, description=desc)
-
