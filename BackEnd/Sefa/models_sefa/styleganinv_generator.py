@@ -145,7 +145,6 @@ class StyleGANInvGenerator(BaseGenerator):
 
     def _synthesize(self,
                     latent_codes,
-                    sefa_usage=None,
                     latent_space_type='z',
                     labels=None,
                     generate_style=False,
@@ -222,14 +221,14 @@ class StyleGANInvGenerator(BaseGenerator):
             raise ValueError(
                 f'Latent space type `{latent_space_type}` is invalid!')
 
-        # Sefa method
-        if sefa_usage != None:
-            temp_codes = self.get_value(wps)
-            for sem_id in tqdm(range(sefa_usage['num_sem']), desc='Semantic ', leave=False):
-              boundary = sefa_usage['boundaries'][sem_id:sem_id + 1]
-              d = sefa_usage['distances'][sefa_usage['step'][sem_id]]
-              temp_codes[:, sefa_usage['layers'], :] += boundary * d
-            wps = self.to_tensor(temp_codes)
+        # # Sefa method
+        # if sefa_usage != None:
+        #     temp_codes = self.get_value(wps)
+        #     for sem_id in tqdm(range(sefa_usage['num_sem']), desc='Semantic ', leave=False):
+        #       boundary = sefa_usage['boundaries'][sem_id:sem_id + 1]
+        #       d = sefa_usage['distances'][sefa_usage['step'][sem_id]]
+        #       temp_codes[:, sefa_usage['layers'], :] += boundary * d
+        #     wps = self.to_tensor(temp_codes)
 
         if generate_style:
             for i in range(self.num_layers):
@@ -248,7 +247,6 @@ class StyleGANInvGenerator(BaseGenerator):
 
     def synthesize(self,
                    latent_codes,
-                   sefa_usage=None,
                    latent_space_type='z',
                    labels=None,
                    generate_style=False,
@@ -257,7 +255,6 @@ class StyleGANInvGenerator(BaseGenerator):
         return self.batch_run(latent_codes,
                               lambda x: self._synthesize(
                                   x,
-                                  sefa_usage=sefa_usage,
                                   latent_space_type=latent_space_type,
                                   labels=labels,
                                   generate_style=generate_style,
