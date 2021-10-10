@@ -4,9 +4,9 @@ import os
 import argparse
 from tqdm import tqdm
 import numpy as np
-
+import sys
 import torch
-
+sys.path.append('Sefa')
 from models import parse_gan_type
 from utils import to_tensor
 from utils import postprocess
