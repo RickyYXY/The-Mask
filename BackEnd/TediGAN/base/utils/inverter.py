@@ -4,7 +4,7 @@
 import sys
 import os
 sys.path.insert(0, os.path.join('TediGAN', 'base'))
-print(sys.path)
+# print(sys.path)
 # sys.path.append(os.path.join('TediGAN', 'base'))
 from models.perceptual_model import PerceptualModel
 from models.stylegan_encoder import StyleGANEncoder

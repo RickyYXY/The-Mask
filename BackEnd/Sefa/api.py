@@ -7,11 +7,11 @@ import numpy as np
 import sys
 import torch
 sys.path.append('Sefa')
-from models import parse_gan_type
-from utils import to_tensor
-from utils import postprocess
-from utils import load_generator
-from utils import factorize_weight
+from models_sefa import parse_gan_type
+from utils_sefa import to_tensor
+from utils_sefa import postprocess
+from utils_sefa import load_generator
+from utils_sefa import factorize_weight
 
 
 def synthesize(generator, gan_type, codes, sefa_usage=None):

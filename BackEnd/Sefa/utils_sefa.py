@@ -8,9 +8,9 @@ import numpy as np
 
 import torch
 
-from models import MODEL_ZOO
-from models import build_generator
-from models import parse_gan_type
+from models_sefa import MODEL_ZOO
+from models_sefa import build_generator
+from models_sefa import parse_gan_type
 
 __all__ = ['postprocess', 'load_generator', 'factorize_weight',
            'HtmlPageVisualizer']

@@ -1,5 +1,5 @@
+from TediGAN.generation_api import *
 from Sefa.api import *
-# from TediGAN.generation_api import *
 import numpy as np
 import torch
 import cv2
@@ -27,15 +27,14 @@ def imshow(images, col, viz_size=256):
     cv2.waitKey(0)
 
 
-
 num = 1
 description = 'she, young, yellow hair'
 
-# codes = ImageEdit(description=description)
-z_space_dim = 512
-seed = 0
-torch.manual_seed(seed)
-codes = torch.randn(num, z_space_dim).cuda()
+codes = ImageEdit(description=description)
+# z_space_dim = 512
+# seed = 0
+# torch.manual_seed(seed)
+# codes = torch.randn(num, z_space_dim).cuda()
 
 layer_index = 'all'
 num_semantics = 5
