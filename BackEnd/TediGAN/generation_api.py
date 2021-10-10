@@ -56,5 +56,11 @@ def ImageEdit(image_path=None, description=None):
     return z, viz_results[-1]
 
 
+def save_code(code, path='tmp_codes'):
+    if not os.path.exists(path):
+        os.makedirs(path)
+    np.save(path, code)
+
+
 # latant_code, fixed_image = ImageEdit(image_path=img_file, description=desc)
 
