@@ -23,6 +23,7 @@ def imshow(images, col, viz_size=256):
         fused_image[y:y + viz_size, x:x + viz_size] = image
 
     fused_image = np.asarray(fused_image, dtype=np.uint8)
+    fused_image = cv2.cvtColor(fused_image, cv2.COLOR_RGB2BGR)
     cv2.imshow("test_imgs", fused_image)
     cv2.waitKey(0)
 
@@ -30,7 +31,7 @@ def imshow(images, col, viz_size=256):
 num = 1
 description = 'she, young, yellow hair'
 
-codes = ImageEdit(description=description)
+codes, _ = ImageEdit(description=description)
 # z_space_dim = 512
 # seed = 0
 # torch.manual_seed(seed)

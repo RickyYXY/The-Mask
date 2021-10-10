@@ -17,7 +17,7 @@ from base.utils.visualizer import resize_image
 os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 hyper_parameter = {
     'model_name': 'styleganinv_ffhq256',
-    'step': 3,
+    'step': 0,
     'lr': 0.01,
     'lambda_clip': 1.0,
     'lambda_feat': 2.0,
