@@ -24,7 +24,7 @@ def FaceGenerate(request):
     else:
         code, _ = ImageEdit(image_path=image_path, description=face_text)
         code_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        code_name = os.path.join(code_dir, 'FaceStatic', 'tempnpy', 'test.npy')
+        code_name = os.path.join(code_dir, 'FaceStatic', 'tempnpy', 'code.npy')
         save_code(code, code_name)
         new_code_name = ''
         code_url = upload_pic_to_qiniu(new_code_name, code_name)
