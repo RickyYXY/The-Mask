@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Layui</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="./layui/css/layui.css"  media="all">
+</head>
+<body>
+
+
+
+<div id="container" style="width:100%;">
+<ul class="layui-nav"  lay-filter="">
+  <li class="layui-nav-item">
+    <a href=""><img src="//t.cn/RCzsdCq" class="layui-nav-img">登录</a>
+    <dl class="layui-nav-child">
+      <dd><a href="javascript:;">修改信息</a></dd>
+      <dd><a href="javascript:;">安全管理</a></dd>
+      <dd><a href="javascript:;">退出</a></dd>
+    </dl>
+  </li>
+  <li class="layui-nav-item"><a href="./text_to_img.html">文字转图片</a></li>
+  <li class="layui-nav-item layui-this"><a href="./resizer.html">图片调整</a></li>
+  <li class="layui-nav-item"><a href="./match.html">图片匹配</a></li>
+</ul>
+
+<div id="menu" style="background-color:#DCDCDC;width:30%;height:540px;float:left;">
+  <div style="margin-top: 20px;text-align: center"><b>Options</b></div>
+  <div class="layui-form-item" style="margin-top: 20px;">
+   <label class="layui-form-label">Models  </label>
+    <div class="layui-input-block">
+      <select name="Model to Interpret" lay-filter="aihao">
+        <option value="" selected="">请选择</option>
+        <option value="0">0</option>
+        <option value="1" >1</option>m
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item" style="margin-top: 20px;">
+   <label class="layui-form-label">Layers </label>
+    <div class="layui-input-block">
+      <select name="Model to Interpret" lay-filter="aihao">
+        <option value="" selected="">请选择</option>
+        <option value="0">0</option>
+        <option value="1" >1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+      </select>
+    </div>
+  </div>
+  <form action="">
+  number<br>
+  <input type="number" id="b" value="50">
+  </form>
+  <div style="margin-top: 20px;">参数一
+    <div id="slideTest1" class="demo-slider"></div>
+  </div>
+  <div style="margin-top: 20px;">参数二
+    <div id="slideTest2" class="demo-slider"></div>
+  </div>
+  <div style="margin-top: 20px;">参数三
+    <div id="slideTest3" class="demo-slider"></div>
+  </div>
+  <div style="margin-top: 20px;">参数四
+    <div id="slideTest4" class="demo-slider"></div>
+  </div>
+  <div style="margin-top: 20px;">参数五
+    <div id="slideTest5" class="demo-slider"></div>
+  </div>
+  <div style="margin-top: 20px;">参数六
+    <div id="slideTest6" class="demo-slider"></div>
+  </div>
+  <button type="button" class="layui-btn layui-btn-normal" style="margin-top:20px;margin-left: 100px" >开始调整</button>
+</div >
+
+<div id="content" style="width:70%;height:420px;float:left;">
+<div class="layui-upload-drag" id="test10" style="width:93%;height:500px;">
+  <img src="" alt="文字转图片成功后渲染">
+</div>
+</div>
+
+
+</div>
+
+
+
+
+
+
+<script src="./layui/layui.js" charset="utf-8"></script>
+<script>
+layui.use('slider', function(){
+  var $ = layui.$
+  ,slider = layui.slider;
+
+  //设置最大最小值
+  slider.render({
+    elem: '#slideTest1'
+     ,step: 10 //步长
+     ,showstep: true //开启间隔点
+    ,change: function(value){
+    console.log(value) //动态获取滑块数值
+    //do something
+  }
+  });
+
+slider.render({
+    elem: '#slideTest2'
+     ,step: 10 //步长
+     ,showstep: true //开启间隔点
+    ,change: function(value){
+    console.log(value) //动态获取滑块数值
+    //do something
+  }
+  });
+
+slider.render({
+    elem: '#slideTest3'
+     ,step: 10 //步长
+     ,showstep: true //开启间隔点
+    ,change: function(value){
+    console.log(value) //动态获取滑块数值
+    //do something
+  }
+  });
+
+slider.render({
+    elem: '#slideTest4'
+     ,step: 10 //步长
+     ,showstep: true //开启间隔点
+    ,change: function(value){
+    console.log(value) //动态获取滑块数值
+    //do something
+  }
+  });
+
+slider.render({
+    elem: '#slideTest5'
+     ,step: 10 //步长
+     ,showstep: true //开启间隔点
+    ,change: function(value){
+    console.log(value) //动态获取滑块数值
+    //do something
+  }
+  });
+
+slider.render({
+    elem: '#slideTest6'
+     ,step: 10 //步长
+     ,showstep: true //开启间隔点
+    ,change: function(value){
+    console.log(value) //动态获取滑块数值
+    //do something
+  }
+  });
+
+});
+</script>
+<script>
+  layui.use(['upload', 'element', 'layer'], function(){
+  var $ = layui.jquery
+  ,upload = layui.upload
+  ,element = layui.element
+  ,layer = layui.layer;
+
+   //拖拽上传
+  upload.render({
+    elem: '#test10'
+    ,url: 'https://httpbin.org/post' //此处用的是第三方的 http 请求演示，实际使用时改成您自己的上传接口即可。
+    ,done: function(res){
+      layer.msg('上传成功');
+      layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', res.files.file);
+      console.log(res)
+    }
+  });
+
+  });
+</script>
+
+
+</body>
+</html>
