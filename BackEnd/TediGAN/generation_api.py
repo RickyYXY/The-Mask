@@ -2,10 +2,7 @@ import os
 import sys
 sys.path.append('TediGAN')
 
-
-import clip
 import numpy as np
-import torch
 from PIL import Image
 
 from base.utils.inverter import StyleGANInverter
@@ -57,9 +54,11 @@ def ImageEdit(image_path=None, description=None):
     return z, viz_results[-1]
 
 
-def save_code(code, path='tmp_codes'):
-    if not os.path.exists(path):
-        os.makedirs(path)
+def save_code(code, path=os.path.join('tmp_codes', 'code.npy')):
+    path_split = os.path.split(path)
+    directory = os.path.join(*path_split[:-1])
+    if directory != '' and not os.path.exists(directory):
+        os.makedirs(directory)
     np.save(path, code)
 
 
