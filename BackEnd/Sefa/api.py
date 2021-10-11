@@ -1,16 +1,16 @@
 """SeFa."""
+import sys
+sys.path.append('Sefa')
+from models_sefa import parse_gan_type
+from utils_sefa import to_tensor
+from utils_sefa import postprocess
+from utils_sefa import load_generator
+from utils_sefa import factorize_weight
 import torch
 import numpy as np
 from tqdm import tqdm
 import argparse
 import os
-import sys
-sys.path.append('Sefa')
-from utils_sefa import factorize_weight
-from utils_sefa import load_generator
-from utils_sefa import postprocess
-from utils_sefa import to_tensor
-from models_sefa import parse_gan_type
 
 
 
@@ -42,6 +42,11 @@ def sample(generator, gan_type, codes):
     if not isinstance(codes, np.ndarray):
         codes = codes.detach().cpu().numpy()
     return codes
+
+
+def load_code(code_dir):
+    code = np.load(code_dir)
+    return code
 
 
 def code_to_img_api(codes, layer_idx, num_semantics, step,
