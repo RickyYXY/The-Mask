@@ -28,7 +28,7 @@ def FaceGenerate(request):
         save_code(code, code_name)
         new_code_name = ''
         code_url = upload_pic_to_qiniu(new_code_name, code_name)
-    # return JsonResponse()
+        return JsonResponse({"Error Code": 0, "Error Message": "SUCCESS", "data": code_url})
 
 def FaceModify(request):
     modify_text = request.POST.get('modtext', None)
