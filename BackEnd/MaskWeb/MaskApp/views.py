@@ -1,13 +1,18 @@
+import sys, os
+wycpath = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(os.path.join(wycpath, 'MaskWeb', 'MaskApp'))
+sys.path.append(wycpath)
 import re
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import JsonResponse
 from maskutils import GetImageFromHttp
-from BackEnd.FaceDetector.Faceutils import upload_pic_to_qiniu
-from BackEnd.TediGAN.generation_api import ImageEdit, save_code
-import os
+from FaceDetector.Faceutils import upload_pic_to_qiniu
+from TediGAN.generation_api import ImageEdit, save_code
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
+@csrf_exempt
 def FaceGenerate(request):
     # 检查上传文本格式
     face_text = request.POST.get('facetext')
