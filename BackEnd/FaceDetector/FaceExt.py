@@ -1,10 +1,14 @@
 # encoding:utf-8
+import os, sys
+basepath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.join(basepath, 'FaceDetector'))
 import requests
 import base64
 import cv2
 import numpy as np
 import urllib.request
 import base64
+
 
 def fetchImageFromHttp(image_url, timeout_s=1):
     # 该函数是读取url图片
