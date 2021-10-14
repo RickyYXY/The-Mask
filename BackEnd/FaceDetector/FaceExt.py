@@ -12,20 +12,17 @@ import base64
 
 def fetchImageFromHttp(image_url, timeout_s=1):
     # 该函数是读取url图片
-    try:
-        if image_url:
-            resp = urllib.request.urlopen(image_url, timeout=timeout_s)
-            image = np.asarray(bytearray(resp.read()), dtype="uint8")
-            image = cv2.imdecode(image, cv2.IMREAD_COLOR)
-            return image
-        else:
-            return []
-    except Exception as error:
-        print('获取图片失败', error)
+    if image_url:
+        resp = urllib.request.urlopen(image_url, timeout=timeout_s)
+        image = np.asarray(bytearray(resp.read()), dtype="uint8")
+        image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+        return image
+    else:
         return []
 
-def FaceExtract(img: str, imgtype: str, facenum=120):
+def FaceExtract(img: str, imgtype: str, imgpos: str, facenum=120):
     # 该函数的作用是提取图中人脸
+    message = {}
     # client_id 为官网获取的AK， client_secret 为官网获取的SK
     host = 'https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=DXN8o5eNaheZahxK558I8GOs&client_secret=bBYbDZj6dbv7w5Pr5hqelm7lL8GfPsBR'
     response = requests.get(host)
@@ -36,6 +33,7 @@ def FaceExtract(img: str, imgtype: str, facenum=120):
     if imgtype == 'Local':
         with open(img, "rb") as f:  # 转为二进制格式
             base64_data = base64.b64encode(f.read())  # 使用base64进行加密
+        base64_data = base64_data.decode()
         params = "\"image\":\"{}\",\"image_type\":\"BASE64\", \"max_face_num\":\"120\"".format(base64_data)
         params = '{' + params + '}'
     elif imgtype == 'url':
@@ -49,7 +47,11 @@ def FaceExtract(img: str, imgtype: str, facenum=120):
         print (response.json())
     # 提取检测到的所有人脸信息
     if response.json()['error_code'] != 0:
-        raise Exception('人脸检测失败，失败码为{}，失败信息为:{}'.format(response.json()['error_code'], response.json()['error_msg']))
+        message['Error Code'] = response.json()['error_code']
+        message['Error Message'] = response.json()['error_msg']
+        message['Data'] = None
+        return message
+        # raise Exception('人脸检测失败，失败码为{}，失败信息为:{}'.format(response.json()['error_code'], response.json()['error_msg']))
     face_number = response.json()['result']['face_num']
     face_List = []
     for num in range(face_number):
@@ -62,11 +64,10 @@ def FaceExtract(img: str, imgtype: str, facenum=120):
     # 这里是读取图像并画框
     if imgtype == 'Local':
         image = cv2.imread(img)
-        if not image:
-            raise Exception('图片读取失败!')
     elif imgtype == 'url':
         image = fetchImageFromHttp(img)
     # 图片编号起始
+    search_all_path = []
     num = 0
     for pos in face_List:
         lefttopx = pos[0]
@@ -75,16 +76,34 @@ def FaceExtract(img: str, imgtype: str, facenum=120):
         rightbottomy = lefttopy + pos[3]
         # print(lefttopx, lefttopy, rightbottomx, rightbottomy)
         cv2.rectangle(image, (lefttopx, lefttopy), (rightbottomx, rightbottomy), (0, 255, 0), 2)
-        cv2.imwrite("C:/WorkSpace/test/detect_face_"+str(num)+'.jpg', image[lefttopy:rightbottomy, lefttopx:rightbottomx])
+        if imgpos == 'Example':
+            savepath = os.path.join(basepath, 'FaceStatic', 'ExampleFace', 'example_face_' + str(num) + '.jpg')
+        elif imgpos == 'Search':
+            pos_name = ','.join([str(lefttopx), str(lefttopy), str(rightbottomx), str(rightbottomy)])
+            savepath = os.path.join(basepath, 'FaceStatic', 'SearchFace', pos_name + '.jpg')
+            search_all_path.append(savepath)
+        # cv2.imwrite("C:/WorkSpace/test/detect_face_"+str(num)+'.jpg', image[lefttopy:rightbottomy, lefttopx:rightbottomx])
+        cv2.imwrite(savepath, image[lefttopy:rightbottomy, lefttopx:rightbottomx])
         num += 1
-
-    return image
+    message['Error Code'] = response.json()['error_code']
+    message['Error Message'] = message['Error Message'] = response.json()['error_msg']
+    if imgpos == 'Example':
+        full_face_path = os.path.join(basepath, 'FaceStatic', 'FullFace', 'Result.jpg')
+        cv2.imwrite(full_face_path, image)
+        message['Data'] = {'ExampleFaces': savepath, 'FacesNum': num, 'FullFace': full_face_path}
+    elif imgpos == 'Search':
+        # full_face_path = os.path.join(basepath, 'FaceStatic', 'FullFace', 'Search.jpg')
+        # cv2.imwrite(full_face_path, image)
+        message['Data'] = {'ExampleFaces': search_all_path, 'FacesNum': num, 'FullFace': None}
+    return message 
 
 if __name__ == "__main__":
-    imgpath = 'http://xinan.ziqiang.net.cn/ThreeFace.jpeg'
-    result = FaceExtract(imgpath, 'url')
-    cv2.imshow('image', result)
-    cv2.waitKey(0)
+    # imgpath = 'http://xinan.ziqiang.net.cn/ThreeFace.jpeg'
+    imgpath = r'E:\WorkSpace\2020DaSanXia\BigSoft\The-Mask\BackEnd\FaceStatic\TempFrames\ThreeFace.jpeg'
+    # result = FaceExtract(imgpath, 'url')
+    result = FaceExtract(imgpath, 'Local', 'Search')
+    # cv2.imshow('image', result)
+    # cv2.waitKey(0)
 
     
 

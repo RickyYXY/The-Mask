@@ -31,7 +31,6 @@ def VideoSplit(video_path: str):
     # video_path：url
     # 返回值：video_frames：dict类型, key为视频名称, value为视频信息
     video_name = video_path.split('/')[-1][:-4]
-    video_frames = {}
     cap = cv2.VideoCapture(video_path)    
     all_frames = []
     i = 0
@@ -50,11 +49,11 @@ def VideoSplit(video_path: str):
     if all_frames:
         print("Video {} loaded successfully".format(video_name))
         # return all_frames, width, height, fps
-        video_frames[video_name] = [all_frames, width, height, fps]
+        video_frames = [all_frames, width, height, fps]
     else:
         print("Video loading failed")
         # return None
-        video_frames[video_name] = None
+        video_frames = None
     return video_frames
 
 
