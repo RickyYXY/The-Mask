@@ -13,6 +13,16 @@ import cv2
 import base64
 
 def FaceSearch(exampleimg: str, searchvid: str):
+    '''
+    参数:
+    exampleimg: 生成人脸图像的URL
+    searchvid: 待检测视频的URL
+    返回值:
+    Message: 字典类型
+    Error code: 0表示成功，非0值表示失败
+    Error Message: 失败信息，SUCCESS表示成功，其他情况为失败信息
+    Data: 若失败则为None，成功则字段如下: match score表示匹配分数，match result表示匹配结果，ExampleFace表示生成人脸图像检测结果图URL，SearchFace表示匹配最好的那一帧的检测结果
+    '''
     message = {}
     expimg = fetchImageFromHttp(exampleimg)
     srhvidframes = VideoSplit(searchvid)
