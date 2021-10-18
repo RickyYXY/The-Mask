@@ -39,7 +39,7 @@ codes, _ = ImageEdit(description=description)
 
 layer_index = 'all'
 num_semantics = 5
-step = [5, 5, 5, 5, 5]
+step = [5, 5, 10, 5, 5]
 
 res_img = code_to_img_api(codes, layer_index, num_semantics, step)
 imshow(res_img, num)
