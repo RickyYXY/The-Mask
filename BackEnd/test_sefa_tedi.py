@@ -24,12 +24,13 @@ def imshow(images, col, viz_size=256):
 
     fused_image = np.asarray(fused_image, dtype=np.uint8)
     fused_image = cv2.cvtColor(fused_image, cv2.COLOR_RGB2BGR)
+    cv2.imwrite("test_new.jpg", fused_image)
     cv2.imshow("test_imgs", fused_image)
     cv2.waitKey(0)
 
 
 num = 1
-description = 'she, young, yellow hair'
+description = 'This woman has black long hair and wears earrings. She is smiling.'
 
 codes, _ = ImageEdit(description=description)
 # z_space_dim = 512
@@ -39,7 +40,7 @@ codes, _ = ImageEdit(description=description)
 
 layer_index = 'all'
 num_semantics = 5
-step = [5, 5, 10, 5, 5]
+step = [5, 5, 5, 5, 5]
 
 res_img = code_to_img_api(codes, layer_index, num_semantics, step)
 imshow(res_img, num)

@@ -14,12 +14,12 @@ from base.utils.visualizer import resize_image
 os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 hyper_parameter = {
     'model_name': 'styleganinv_ffhq256',
-    'step': 0,
+    'step': 200,
     'lr': 0.01,
     'lambda_clip': 1.0,
-    'lambda_feat': 2.0,
+    'lambda_feat': 5e-5,
     'lambda_l2': 1.0,
-    'lambda_enc': 5,
+    'lambda_enc': 2.0,
 }
 
 
