@@ -81,7 +81,7 @@ def FaceSearch(exampleimg: str, searchvid: str):
         cv2.rectangle(high_frame, (lefttopx, lefttopy), (rightbottomx, rightbottomy), (0, 255, 0), 2)
         full_face_path = os.path.join(basepath, 'FaceStatic', 'FullFace', 'Search.jpg')
         cv2.imwrite(full_face_path, high_frame)
-        high_url = upload_pic_to_qiniu('High_score_Face', full_face_path)   
+        high_url = upload_pic_to_qiniu('High_score_Face.jpg', full_face_path)   
         message['Error code'] = 0
         message['Error Message'] = 'SUCCESS'
         if high_score >= 80:
@@ -97,7 +97,7 @@ def FaceSearch(exampleimg: str, searchvid: str):
     for i in os.listdir(os.path.join(basepath, 'FaceStatic', 'SearchFace')):
         del_path.append(os.path.join(basepath, 'FaceStatic', 'SearchFace', i))
     for i in os.listdir(os.path.join(basepath, 'FaceStatic', 'TempFrames')):
-        del_path.append(os.path.join(basepath, 'FaceStatic', 'SearchFace', i))
+        del_path.append(os.path.join(basepath, 'FaceStatic', 'TempFrames', i))
     for i in del_path:
         os.remove(i)
     return message

@@ -3,9 +3,9 @@
 
 import sys
 import os
-sys.path.insert(0, os.path.join('TediGAN', 'base'))
+lswpath = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 # print(sys.path)
-# sys.path.append(os.path.join('TediGAN', 'base'))
+sys.path.insert(0, os.path.join(lswpath, 'TediGAN', 'base'))
 from models.perceptual_model import PerceptualModel
 from models.stylegan_encoder import StyleGANEncoder
 from models.stylegan_generator import StyleGANGenerator

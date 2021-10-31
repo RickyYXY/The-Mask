@@ -10,7 +10,7 @@ import urllib.request
 import base64
 
 
-def fetchImageFromHttp(image_url, timeout_s=1):
+def fetchImageFromHttp(image_url, timeout_s=100):
     # 该函数是读取url图片
     if image_url:
         resp = urllib.request.urlopen(image_url, timeout=timeout_s)

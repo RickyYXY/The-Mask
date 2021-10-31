@@ -1,7 +1,8 @@
 import os
 import sys
-sys.path.append('TediGAN')
-
+#sys.path.append('TediGAN')
+lswpath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.join(lswpath, 'TediGAN'))
 import numpy as np
 from PIL import Image
 

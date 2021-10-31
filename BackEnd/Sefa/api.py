@@ -1,6 +1,9 @@
 """SeFa."""
-import sys
-sys.path.append('Sefa')
+import sys, os
+# sys.path.append('Sefa')
+lswpath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# print(sys.path)
+sys.path.insert(0, os.path.join(lswpath, 'Sefa'))
 from models_sefa import parse_gan_type
 from utils_sefa import to_tensor
 from utils_sefa import postprocess
@@ -10,7 +13,6 @@ import torch
 import numpy as np
 from tqdm import tqdm
 import argparse
-import os
 
 
 
