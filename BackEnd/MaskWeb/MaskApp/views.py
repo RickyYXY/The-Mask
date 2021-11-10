@@ -31,7 +31,7 @@ def FaceGenerate(request):
     else:
         image_path, ret_code = GetImageFromHttp(img_url)
     # 错误处理
-    if not ret_code:
+    if ret_code:
         return JsonResponse({"Error Code": 1, "Error Message": "Failed to get Text or URL", "data": None})
     # 使用原神的接口
     else:
@@ -51,10 +51,10 @@ def FaceModify(request):
     # print(request.POST)
     # code_path = request.POST.get('code_url', None)
     # 错误处理
-    ret_code = 1
+    ret_code = 0
     if modify_params is None:
-        ret_code = 0
-    if not ret_code:
+        ret_code = 1
+    if ret_code:
         return JsonResponse({"Error Code": 1, "Error Message": "Failed to get Params", "data": None})
     else:
         params = json.loads(modify_params)
@@ -67,8 +67,13 @@ def FaceModify(request):
         if len(step) != num_semantics:
             return JsonResponse({"Error Code": 1, "Error Message": "Step Nums must equal to num_semantics", "data": None})
         image = code_to_img_api(codes=code_py, layer_idx=layer_idx, num_semantics=num_semantics, step=step)
+        print(type(image))
+        print(image.shape)
+        image = image[0]
+        print(image.shape)
         image = np.asarray(image, dtype=np.uint8)
         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+        print(image.shape)
         image_path = os.path.join(wycpath, 'FaceStatic', 'tempmod.jpg')
         cv2.imwrite(image_path, image)
         image_name = 'Mod_images.jpg'
@@ -80,11 +85,11 @@ def FaceMatch(request):
     image_url = request.POST.get('image_url', None)
     video_url = request.POST.get('video_url', None)
     # 错误处理
-    ret_code = 1
+    ret_code = 0
     if image_url is None or video_url is None:
-        ret_code = 0
+        ret_code = 1
     # 调用接口
-    if not ret_code:
+    if ret_code:
         return JsonResponse({"Error Code": 1, "Error Message": "Failed to get Image url or Video url", "data": None})
     else:
         result = FaceSearch(image_url, video_url)
