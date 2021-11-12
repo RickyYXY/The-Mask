@@ -1,6 +1,7 @@
 import os
 import sys
-#sys.path.append('TediGAN')
+
+# sys.path.append('TediGAN')
 lswpath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.join(lswpath, 'TediGAN'))
 import numpy as np
@@ -13,27 +14,36 @@ from base.utils.visualizer import resize_image
 # desc = 'she is young'
 
 os.environ["CUDA_VISIBLE_DEVICES"] = '0'
-parameters = {
-    'model_name': 'styleganinv_ffhq256',
-    'step': 200,
-    'lr': 0.01,
-    'lambda_clip': 1.0,
-    'lambda_feat': 5e-5,
-    'lambda_l2': 1.0,
-    'lambda_enc': 2.0,
-}
 
 
 def ImageEdit(image_path=None, description=None, hyper_parameter=None):
     """
-    image_path: 图片在本地的路径
-    description: 英文文本描述
-    hyper_parameter: 超参数
+    image_path: string 图片在本地的路径
+    description: string 英文文本描述
+    hyper_parameter: dict 超参数
     """
-    if hyper_parameter is None:
-        hyper_parameter = parameters
 
-    mode = 'gen' if image_path is None else 'man'
+    parameters = {
+        'model_name': 'styleganinv_ffhq256',
+        'step': 200,
+        'lr': 0.01,
+        'lambda_clip': 1.0,
+        'lambda_feat': 5e-5,
+        'lambda_l2': 1.0,
+        'lambda_enc': 2.0,
+    }
+
+    if hyper_parameter is not None:
+        assert isinstance(hyper_parameter, dict)
+        parameters.update(hyper_parameter)
+    hyper_parameter = parameters
+
+    if image_path is not None:
+        assert os.path.exists(image_path)
+        mode = 'man'
+    else:
+        mode = 'gen'
+
     if not description and not image_path:
         return None
 
@@ -69,6 +79,5 @@ def save_code(code, path=os.path.join('tmp_codes', 'code.npy')):
     if directory != '' and not os.path.exists(directory):
         os.makedirs(directory)
     np.save(path, code)
-
 
 # latant_code, fixed_image = ImageEdit(image_path=img_file, description=desc)
