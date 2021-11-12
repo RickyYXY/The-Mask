@@ -13,7 +13,7 @@ from base.utils.visualizer import resize_image
 # desc = 'she is young'
 
 os.environ["CUDA_VISIBLE_DEVICES"] = '0'
-hyper_parameter = {
+parameters = {
     'model_name': 'styleganinv_ffhq256',
     'step': 200,
     'lr': 0.01,
@@ -24,7 +24,15 @@ hyper_parameter = {
 }
 
 
-def ImageEdit(image_path=None, description=None):
+def ImageEdit(image_path=None, description=None, hyper_parameter=None):
+    """
+    image_path: 图片在本地的路径
+    description: 英文文本描述
+    hyper_parameter: 超参数
+    """
+    if hyper_parameter is None:
+        hyper_parameter = parameters
+
     mode = 'gen' if image_path is None else 'man'
     if not description and not image_path:
         return None
