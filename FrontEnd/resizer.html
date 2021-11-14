@@ -104,12 +104,14 @@
 <script src="./layui/layui.js" charset="utf-8"></script>
 <script src="./layui/jquery-3.6.0.js" charset="utf-8"></script>
 <script>
+
+var v1=5,v2=5,v3=5,v4=5,v5=5,v6=5,v7=5,v8=5,v9=5,v10=5;     //滑块初始值为5
+var layer_index='all';   //layers初始值为all
 layui.use('slider', function(){
   var $ = layui.$
   ,slider = layui.slider;
 
-  var v1=5,v2=5,v3=5,v4=5,v5=5,v6=5,v7=5,v8=5,v9=5,v10=5;     //滑块初始值为5
-  var layer_index='all';   //layers初始值为all
+  
 
   layui.use('form', function(){
   var form = layui.form;
@@ -270,9 +272,10 @@ slider.render({
     //   "num_semantics": "10", 
     //   "step": '\"'+v1+','+v2+','+v3+','+v4+','+v5+','+v6+','+v7+','+v8+','+v9+','+v10+'\"',
     // }
- 
+  
     $('#PostButton').on('click',function(){
       $.ajax({
+         url: "facemod/",
          type:'post',
          data:{
            modify_params:'{'+'\"'+'layer_idx'+'\"'+":"+'\"'+layer_index+'\"'+','+ 
@@ -281,7 +284,7 @@ slider.render({
            +'}'
           }, //参数
          dataType:'json', 
-         url: "facemod/",
+        
          success: function(res) {
             var code = res["Error Code"].toString();
             var msg = res["Error Message"].toString();
