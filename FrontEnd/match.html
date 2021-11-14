@@ -23,22 +23,31 @@
   <li class="layui-nav-item layui-this"><a href="./match.html">图片匹配</a></li>
 </ul>
 
-<div style=" text-align:center;margin-top:40px;">
-    <img src="" alt="图片" id="IMG" style="width:30%;height:200px">
-    <div class="layui-upload-drag" id="test11" style="width:30%;height:200px">
-        <i class="layui-icon"></i>
-        <p>点击上传，或将文件拖拽到此处</p>
-        <div class="layui-hide" id="uploadDemoView11">
-         <hr>
-            <video controls>
-            <source src="" type="video/mp4" style="max-width: 196px">
-            </video>
+
+
+<div class="layui-form-item" >
+  <img src="" alt="图片" id="IMG1" style="height:200px">
+  <div class="layui-btn-container" style="width:250px;height:100px;margin-left:68%;margin-top:-150px">
+    <button type="button" class="layui-btn cover" id="control_video_button" >上传视频</button>
+    <button type="button" class="layui-btn layui-btn-danger cover" id="control_video_del" >删除视频</button>
+    <input type="hidden" id="control_video" value="{$detail.control_video}" name="control_video"/>
+    <input type="hidden" id="temp_url_id" value="" name="temp_url_id"/>
+  </div>
+</div>
+ 
+ <div class="layui-form-item" >
+    <label class="layui-form-label"></label>
+    <div class="layui-input-block">
+        <video src="{$detail.control_video}" controls="controls" id="control_video_demo" style="width:45%;margin-left:50%;margin-top:-20px">                              
+        </video>
+        <p id="demoText"></p>
     </div>
 </div>
+  
 </div>
 
-<div style="width: 370px;margin-top:40px;margin:30px auto">
-  <button type="button" class="layui-btn layui-btn-fluid">开始匹配</button>
+<div style="width: 370px;margin-top:40px;margin:70px auto">
+  <button id="MatchButoon" type="button" class="layui-btn layui-btn-fluid">开始匹配</button>
 </div>
 
 <div class="layui-hide" id="MatchResult">
@@ -46,25 +55,84 @@
 </div>
 
 <script src="./layui/layui.js" charset="utf-8"></script>
+<script src="./layui/jquery-3.6.0.js" charset="utf-8"></script>
 <script>
-    layui.use(['upload', 'element', 'layer'], function(){
-  var $ = layui.jquery
-  ,upload = layui.upload
-  ,element = layui.element
-  ,layer = layui.layer;
 
-  upload.render({
-    elem: '#test11'
-    ,url: 'https://httpbin.org/post' //此处用的是第三方的 http 请求演示，实际使用时改成您自己的上传接口即可。
-    ,accept: 'video' //普通文件
-    ,done: function(res){
-      layer.msg('上传成功');
-      layui.$('#uploadDemoView11').removeClass('layui-hide').find('src').attr('src', res.files.file);
-      console.log(res)
-    }
-  });
+  // 读取数据
+var PicURL = localStorage.getItem('picURL');  //获取本地存储中picURL的值
+var VideoURL = null;
+var token ='h1E1mid8K0zRr848y7uTIPi18GyXnDuzkaLkmW4C:2tfT7r_9TJJj1Ksknp65g9TQgM8=:eyJzY29wZSI6InhpbnhpYW5xdWFuZGFzYWkiLCJkZWFkbGluZSI6MTYzOTUxMDUyMH0=';
 
+$("#IMG1").attr("src",PicURL);
+
+layui.use(['upload','form'], function(){
+  var form = layui.form
+      ,$ = layui.jquery
+      ,upload = layui.upload;
+
+var uploadInst = upload.render({
+              elem: '#control_video_button', //绑定元素
+              url: 'http://upload-z2.qiniu.com/',//上传接口
+              accept: 'video',
+              data: {'token':token}
+              ,before: function(obj){
+                  //预读本地文件示例，不支持ie8
+                  obj.preview(function(index, file, result){
+                      $('#control_video_demo').attr('src', result); //图片链接（base64）
+                      $('#control_video_demo').css('display','block');
+                      $('#control_video_del').css('display','inline');
+                  });
+              },
+              done: function(res){
+                  console.log(res);
+
+              VideoURL='http://xinan.ziqiang.net.cn/'+res['key'];    
+              console.log(VideoURL)
+              }
+          });
+
+          $('#control_video_del').click(function(){
+              $('#control_video_demo').css('display','none');
+              $('#control_video_del').css('display','none');
+              $('#control_video').val('');
+          })
 });
+
+$('#MatchButoon').on('click',function(){
+      $.ajax({
+         type:'post',
+         data:{
+          image_url:PicURL,
+          video_url:VideoURL
+          }, //参数
+         dataType:'json', 
+         url: "facemat/",
+         success: function(res) {
+            var code = res["Error Code"].toString();
+            var msg = res["Error Message"].toString();
+            var MatchRes = JSON.parse(res["data"].toString());
+
+            var score = MatchRes['match score'];
+            var m_result = MatchRes['match result'];
+            var examle = MatchRes['ExampleFace'];
+            var best = MatchRes['SearchFace'];
+
+            if(code =="1")
+              console.log(msg);
+            else {
+             //将图片的url设置给src
+             $("#ExamplePic").attr("src",example);
+             $("#BestPic").attr("src",best);
+
+             alert(m_result);
+            }
+         },
+         error:function(res){
+             console.log('响应失败！');
+         }
+      })
+    })
+
 </script>
 
 </body>

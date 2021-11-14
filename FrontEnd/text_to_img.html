@@ -14,7 +14,7 @@
   <li class="layui-nav-item">
     <a href=""><img src="//t.cn/RCzsdCq" class="layui-nav-img">登录</a>
     <dl class="layui-nav-child">
-      <dd><a href="javascript:;">修改信息</a></dd>
+      <dd><a href="./register.html">修改信息</a></dd>
       <dd><a href="javascript:;">安全管理</a></dd>
       <dd><a href="javascript:;">退出</a></dd>
     </dl>
@@ -31,114 +31,186 @@
     <div class="layui-input-block">
       <textarea placeholder="请输入内容"  class="layui-textarea" ></textarea>
 	<div>
-		<p>提示：<br>1.请用英文文本作答</br>
-		<br>2.输入目标的面部特征</br>
+		<p>提示：请用英文文本作答，输入目标的面部特征</br>
 		</p>
 		<div class="layui-form">
   <table class="layui-table">
     <colgroup>
       <col width="150">
       <col width="150">
-      <col width="200">
       <col width="150">
+      <col width="200">
     </colgroup>
     <thead>
       <tr>
-        <th>发色</th>
-        <th>脸型</th>
-        <th>眼睛颜色</th>
-        <th>眼皮</th>
+        <td>发色</td>
+        <td>脸型</td>
+        <td>眼睛颜色</td>
+        <td>胡子形状</td>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>黑色</td>
-        <td>圆形脸型</td>
-        <td>黑色</td>
-        <td>单眼皮</td>
+        <td>Black(黑发)</td>
+        <td>Round(圆脸)</td>
+        <td>Black(黑眼睛)</td>
+        <td>Goatee(山羊胡)</td>
       </tr>
       <tr>
-        <td>棕色</td>
-        <td>方形脸型</td>
-        <td>蓝色</td>
-        <td>双眼皮</td>
+        <td>Brown(棕发)</td>
+        <td>Square(方脸)</td>
+        <td>Blue(蓝眼睛)</td>
+        <td>Mutton Chops(羊排络腮胡)</td>
       </tr>
       <tr>
-        <td>金色</td>
-        <td>杏仁形脸型</td>
-        <td>棕色</td>
-        <td>...</td>
+        <td>Blonde(金发)</td>
+        <td>Diamond(菱形脸)</td>
+        <td>Brown(棕眼睛)</td>
+        <td>Handlebar(八字胡)</td>
       </tr>
       <tr>
-        <td>红色</td>
-        <td>卵圆形脸型</td>
-        <td>绿色</td>
-        <td>...</td>
+        <td>Red(红发)</td>
+        <td>Oval(椭圆形脸)</td>
+        <td>Green(绿眼睛)</td>
+        <td>Short Boxed Beard(短箱式胡)</td>
       </tr>
       <tr>
-        <td>白色</td>
-        <td>长圆形脸型</td>
-        <td>褐色</td>
-        <td>... </td>
+        <td>White(白发)</td>
+        <td>Heart(心形脸)</td>
+        <td>Gold(金眼睛)</td>
+        <td>Van Dyke(凡戴克式)</td>
       </tr>
     </tbody>
   </table>
+
+  <div class="layui-form">
+    <table class="layui-table">
+      <colgroup>
+        <col width="150">
+        <col width="150">
+        <col width="150">
+        <col width="200">
+      </colgroup>
+      <thead>
+        <tr>
+          <td>年龄</td>
+          <td>性别</td>
+          <td>胖瘦</td>
+          <td>眼皮形状</td>
+        </tr> 
+      </thead>
+      <tbody>
+        <tr>
+          <td>old(老)</td>
+          <td>male(男)</td>
+          <td>fat(胖)</td>
+          <td>Single Eyelid(单眼皮)</td>
+        </tr>
+        <tr>
+          <td>young(年轻)</td>
+          <td>female(女)</td>
+          <td>thin(瘦)</td>
+          <td>Double Eyelid(双眼皮)</td>
+        </tr>
+ 
+      </tbody>
+    </table>
+  </div>
 </div>
 	</div>
     </div>
   </div>
   <div class="layui-form-item">
     <div class="layui-input-block">
-      <button type="submit" class="layui-btn" lay-submit="" lay-filter="Demo1">立即提交</button>
+      <!-- <button type="submit" class="layui-btn" lay-submit="" lay-filter="Demo1">立即提交</button> -->
       <button type="reset" class="layui-btn layui-btn-primary">重置</button>
     </div>
   </div>
 </form>
 
-<div class="layui-upload-drag" id="test10" style="width:40%;height:200px;float:left">
+<div class="layui-upload-drag" id="UploadPic" style="width:40%;height:550px;float:left">
         <i class="layui-icon"></i>
         <p>点击上传，或将文件拖拽到此处</p>
-        <div class="layui-hide" id="uploadDemoView11">
-         <hr>
-            <img src="" alt="图片上传后渲染" style="max-width: 196px">
+        <div class="layui-hide" id="uploadDemoView">
+        <hr>
+        <img src="" alt="上传成功后渲染" style="max-width: 600px">
     </div>
 </div>
 </div>
 
-
-
+<div style="width: 370px;margin-top:20px auto;margin:auto;">
+  <!-- <a href="resizer.html" class="layui-btn layui-btn-fluid">生成人脸</a> -->
+  <button type="submit" class="layui-btn layui-btn-fluid" lay-submit="" lay-filter="Demo1">生成人脸</button>
+</div>
 
 <script src="./layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="./qiniu-token/bin/qiniu-token.min.js"></script>
 <script>
-//Demo
+  
+//上传图片至七牛云，并获取图片URL
+var token = 'h1E1mid8K0zRr848y7uTIPi18GyXnDuzkaLkmW4C:2tfT7r_9TJJj1Ksknp65g9TQgM8=:eyJzY29wZSI6InhpbnhpYW5xdWFuZGFzYWkiLCJkZWFkbGluZSI6MTYzOTUxMDUyMH0='
+var PicURL=null;
+layui.use(['upload', 'element', 'layer'], function(){
+        var $ = layui.jquery
+        ,upload = layui.upload
+        ,element = layui.element
+        ,layer = layui.layer;
+         
+        
+        upload.render({
+           elem: '#UploadPic'
+           ,url: 'http://upload-z2.qiniu.com/' 
+           ,data: {'token':token
+           }
+           ,accept: 'images' //普通文件
+           ,done: function(res){
+           //如果上传失败
+              if(res.key!=null){
+              PicURL='http://xinan.ziqiang.net.cn/'+res['key'];
+              layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', PicURL);
+              console.log(res);
+              console.log(PicURL) 
+              }
+              else console.log('Failed!')
+              }
+         });
+
+    });
+
+//Demo1
 layui.use('form', function(){
   var form = layui.form;
 
   //监听提交
   form.on('submit(Demo1)', function(data){
-    layer.msg(JSON.stringify(data.field));
-    return false;
+    
+    $.ajax({ 
+				url:'facegen/',   
+				method:'post',   
+				data:{
+          facetext:data.field,
+          img:PicURL
+        },    
+				dataType:'JSON',    
+				success:function(res){  
+          var code = res["Error Code"].toString();
+          var msg = res["Error Message"].toString();
+          var data = res["data"].toString();
+          
+					if(code =='0'){   
+					layer.msg("提交成功",{icon: 1, time: 3000},function(){location.reload();}); //提交成功后刷新页面
+					}   
+          else console.log(msg);      
+					}   
+					
+			});
+      
+    });
   });
-});
 
-layui.use(['upload', 'element', 'layer'], function(){
-  var $ = layui.jquery
-  ,upload = layui.upload
-  ,element = layui.element
-  ,layer = layui.layer;
-
-  upload.render({
-    elem: '#test10'
-    ,url: 'https://httpbin.org/post' //此处用的是第三方的 http 请求演示，实际使用时改成您自己的上传接口即可。
-    ,accept: 'images' //普通文件
-    ,done: function(res){
-      layer.msg('上传成功');
-      layui.$('#uploadDemoView').removeClass('layui-hide').find('src').attr('src', res.files.file);
-      console.log(res)
-    }
-  });
-
-});
+// 写入数据
+localStorage.setItem('picURL',PicURL);  //将变量PicURL(值为PicURL)存储至本地
+  
 </script>
 
 
