@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Layui</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="./layui/css/layui.css"  media="all">
+</head>
+
+<body>
+
+<div style="margin-top:15px;margin-left:20px">
+    <li><span class="layui-font-20" id="MatchScore">在此渲染数据</span></li>  
+</div>
+
+<div>
+    
+<table><tr>
+    <td><img id="MatchPic" alt="图片匹配结果"  style="width:100%;height:420px;float:left;top:20px" src=""></td>
+    <td><img id="MatchVideo" alt="视频匹配结果" style="width:100%;height:420px;float:left;top:20px" src=""></td>
+    </tr></table>
+</div>
+
+
+<script src="./layui/layui.js" charset="utf-8"></script>
+<script src="./layui/jquery-3.6.0.js" charset="utf-8"></script>
+<script>
+
+var score=parent.getMethodValue(score); 
+var faceimge=parent.getMethodValue(faceimg); 
+var facevideo=parent.getMethodValue(facevideo); 
+var score=parent.getMethodValue(score); 
+            
+
+$('#MatchScore').text('匹配分数：'+score);
+//将图片的url设置给src
+$("#MatchPic").attr("src",faceimg);
+$("#MatchVideo").attr("src",facevideo);
+
+
+</script>
+
+
+</body>
+</html>

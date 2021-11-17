@@ -78,7 +78,7 @@ var uploadInst = upload.render({
               ,before: function(obj){
                   //预读本地文件示例，不支持ie8
                   obj.preview(function(index, file, result){
-                      $('#control_video_demo').attr('src', result); //图片链接（base64）
+                      $('#control_video_demo').attr('src', result);  
                       $('#control_video_demo').css('display','block');
                       $('#control_video_del').css('display','inline');
                   });
@@ -99,6 +99,7 @@ var uploadInst = upload.render({
 });
 
 $('#MatchButoon').on('click',function(){
+
       $.ajax({
          type:'post',
          data:{
@@ -106,25 +107,31 @@ $('#MatchButoon').on('click',function(){
           video_url:VideoURL
           }, //参数
          dataType:'json', 
-         url: "facemat/",
+         url: "http://localhost:8000/MaskApp/facemat/",
          success: function(res) {
             var code = res["Error Code"].toString();
             var msg = res["Error Message"].toString();
-            var MatchRes = JSON.parse(res["data"].toString());
+            var MatchRes = JSON.parse(res["data"].toString());  //转为json格式
 
             var score = MatchRes['match score'];
             var m_result = MatchRes['match result'];
-            var examle = MatchRes['ExampleFace'];
-            var best = MatchRes['SearchFace'];
-
-            if(code =="1")
-              console.log(msg);
-            else {
-             //将图片的url设置给src
-             $("#ExamplePic").attr("src",example);
-             $("#BestPic").attr("src",best);
-
-             alert(m_result);
+            var faceimg = MatchRes['ExampleFace'];       
+            var facevideo = MatchRes['SearchFace'];
+            
+            if(code =="1"){
+              console.log(msg);   
+              layer.open({
+                type:2,
+                title:"匹配结果",
+                // skin: 'layui-layer-rim',
+                area:['800px','550px'],
+                fix:false,
+                content:"match_result.html",
+                
+            });          
+           }
+            else {            
+             layer.alert(m_result);
             }
          },
          error:function(res){

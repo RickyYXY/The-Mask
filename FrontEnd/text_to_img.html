@@ -29,7 +29,7 @@
 <form class="layui-form" action="" style="margin-top: 10px;width:50%;float:left">
  <div class="layui-form-item layui-form-text">
     <div class="layui-input-block">
-      <textarea placeholder="请输入内容"  class="layui-textarea" ></textarea>
+      <textarea placeholder="请输入内容"  class="layui-textarea" id="UserInput" name="InputText"></textarea>
 	<div>
 		<p>提示：请用英文文本作答，输入目标的面部特征</br>
 		</p>
@@ -140,7 +140,7 @@
 
 <div style="width: 370px;margin-top:20px auto;margin:auto;">
   <!-- <a href="resizer.html" class="layui-btn layui-btn-fluid">生成人脸</a> -->
-  <button type="submit" class="layui-btn layui-btn-fluid" lay-submit="" lay-filter="Demo1">生成人脸</button>
+  <button type="submit" class="layui-btn layui-btn-fluid" lay-submit="" lay-filter="GenButton">生成人脸</button>
 </div>
 
 <script src="./layui/layui.js" charset="utf-8"></script>
@@ -176,19 +176,20 @@ layui.use(['upload', 'element', 'layer'], function(){
          });
 
     });
-
-//Demo1
+// var facetext=$("textarea[name=InputText]").val();
+// console.log(facetext);
+//GenButton
 layui.use('form', function(){
   var form = layui.form;
 
   //监听提交
-  form.on('submit(Demo1)', function(data){
+  form.on('submit(GenButton)', function(data){
     
     $.ajax({ 
-				url:'facegen/',   
+				url:'http://localhost:8000/MaskApp/facegen/',   
 				method:'post',   
 				data:{
-          facetext:data.field,
+          facetext:$("textarea[name=InputText]").val(),
           img:PicURL
         },    
 				dataType:'JSON',    
@@ -204,7 +205,7 @@ layui.use('form', function(){
 					}   
 					
 			});
-      
+    window.location.href = "./resizer.html" ; 
     });
   });
 

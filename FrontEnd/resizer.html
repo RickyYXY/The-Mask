@@ -101,6 +101,9 @@
 </div>
 
 
+  <!-- <a href="match.html" class="layui-btn layui-btn-fluid" style="width:370px;margin:170px;margin-top:200px">下一步</a> -->
+  
+</div>
 <script src="./layui/layui.js" charset="utf-8"></script>
 <script src="./layui/jquery-3.6.0.js" charset="utf-8"></script>
 <script>
@@ -267,21 +270,18 @@ slider.render({
 
 });
 
-    // var PostJSON={
-    //   "layer_idx":layer_index,
-    //   "num_semantics": "10", 
-    //   "step": '\"'+v1+','+v2+','+v3+','+v4+','+v5+','+v6+','+v7+','+v8+','+v9+','+v10+'\"',
-    // }
+    var PostJSON={
+      "layer_idx":layer_index,
+      "num_semantics": "10", 
+      "step": '\"'+v1+','+v2+','+v3+','+v4+','+v5+','+v6+','+v7+','+v8+','+v9+','+v10+'\"'
+    }
   
     $('#PostButton').on('click',function(){
       $.ajax({
-         url: "facemod/",
+         url: "http://localhost:8000/MaskApp/facemod/",
          type:'post',
          data:{
-           modify_params:'{'+'\"'+'layer_idx'+'\"'+":"+'\"'+layer_index+'\"'+','+ 
-           '\"'+'num_semantics'+'\"'+':'+ '\"'+10+'\"'+','+
-           '\"'+'step'+'\"'+':'+'\"'+v1+','+v2+','+v3+','+v4+','+v5+','+v6+','+v7+','+v8+','+v9+','+v10+'\"'
-           +'}'
+           modify_params:JSON.parse(PostJSON)
           }, //参数
          dataType:'json', 
         
