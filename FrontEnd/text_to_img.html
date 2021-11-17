@@ -185,7 +185,7 @@ layui.use('form', function(){
   form.on('submit(Demo1)', function(data){
     
     $.ajax({ 
-				url:'facegen/',   
+				url:'http://localhost:8000/MaskApp/facegen/',   
 				method:'post',   
 				data:{
           facetext:data.field,
