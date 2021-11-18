@@ -59,7 +59,9 @@
 <script>
 
   // 读取数据
-var PicURL = localStorage.getItem('picURL');  //获取本地存储中picURL的值
+var PicURL = localStorage.getItem('data');  //获取本地存储中picURL的值
+console.log(PicURL);
+// var PicURL="http://xinan.ziqiang.net.cn/AsFace.jpg";
 var VideoURL = null;
 var token ='h1E1mid8K0zRr848y7uTIPi18GyXnDuzkaLkmW4C:2tfT7r_9TJJj1Ksknp65g9TQgM8=:eyJzY29wZSI6InhpbnhpYW5xdWFuZGFzYWkiLCJkZWFkbGluZSI6MTYzOTUxMDUyMH0=';
 
@@ -118,8 +120,11 @@ $('#MatchButoon').on('click',function(){
             var faceimg = MatchRes['ExampleFace'];       
             var facevideo = MatchRes['SearchFace'];
             
-            if(code =="1"){
-              console.log(msg);   
+            if(code =="0"){
+              console.log(m_result);  
+            
+              console.log(faceimg);
+              console.log(facevideo);
               layer.open({
                 type:2,
                 title:"匹配结果",
@@ -131,7 +136,7 @@ $('#MatchButoon').on('click',function(){
             });          
            }
             else {            
-             layer.alert(m_result);
+             layer.alert(msg);
             }
          },
          error:function(res){

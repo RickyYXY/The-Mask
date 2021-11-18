@@ -136,11 +136,11 @@ layui.use('slider', function(){
      ,showstep: true //开启间隔点
     ,change: function(value){
     console.log(value) ;//动态获取滑块数值
-    var v1=value;
-    //do something
+    v1=value;
   }
   });
-
+ 
+console.log(v1);
 slider.render({
     elem: '#slideTest2'
      ,step: 1 //步长
@@ -263,38 +263,44 @@ slider.render({
     ,change: function(value){
     console.log(value) //动态获取滑块数值
     var v10=value;
-    console.log(typeof(v2));
-    //do something
+        //do something
   }
   });
 
 });
-
+    // var step_val=v1+','+v2+','+v3+','+v4+','+v5+','+v6+','+v7+','+v8+','+v9+','+v10;
     var PostJSON={
-      "layer_idx":layer_index,
-      "num_semantics": "10", 
-      "step": '\"'+v1+','+v2+','+v3+','+v4+','+v5+','+v6+','+v7+','+v8+','+v9+','+v10+'\"'
+      layer_idx:layer_index,
+      num_semantics: "10", 
+      step: v1+','+v2+','+v3+','+v4+','+v5+','+v6+','+v7+','+v8+','+v9+','+v10
     }
-  
+    // console.log(typeof(step_val));
+    // console.log(PostJSON);
     $('#PostButton').on('click',function(){
       $.ajax({
          url: "http://localhost:8000/MaskApp/facemod/",
          type:'post',
-         data:{
-           modify_params:JSON.parse(PostJSON)
-          }, //参数
-         dataType:'json', 
-        
+        //  data:{
+        // "layer_idx":layer_index,
+        // "num_semantics": "10", 
+        // "step": step_val
+        // }, //参数
+         data:PostJSON, 
+         dataType:'JSON', 
+        //  contentType:'application/json;charset=UTF-8', 
+        // contentType:'multipart/form-data',
          success: function(res) {
             var code = res["Error Code"].toString();
             var msg = res["Error Message"].toString();
-            var data = res["data"].toString();
+            // var data = res["data"].toString();
             if(code =="1")
               console.log(msg);
-            else if(data!=null) {
+            else  {
+            var data = res["data"].toString();
              //将图片的url设置给src
              $("#ImagePic").attr("src",data);
-             consle.log(msg);
+             localStorage.setItem('data',data);  //将变量PicURL(值为PicURL)存储至本地
+             console.log(msg);
             }
          },
          error:function(res){
@@ -302,6 +308,7 @@ slider.render({
          }
       })
     })
+    
   
 </script>
 

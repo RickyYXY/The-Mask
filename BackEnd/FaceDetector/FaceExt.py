@@ -10,7 +10,7 @@ import urllib.request
 import base64
 
 
-def fetchImageFromHttp(image_url, timeout_s=100):
+def fetchImageFromHttp(image_url, timeout_s=1):
     # 该函数是读取url图片
     if image_url:
         resp = urllib.request.urlopen(image_url, timeout=timeout_s)
@@ -99,9 +99,11 @@ def FaceExtract(img: str, imgtype: str, imgpos: str, facenum=120):
 
 if __name__ == "__main__":
     # imgpath = 'http://xinan.ziqiang.net.cn/ThreeFace.jpeg'
-    imgpath = r'E:\WorkSpace\2020DaSanXia\BigSoft\The-Mask\BackEnd\FaceStatic\TempFrames\ThreeFace.jpeg'
+    imgpath = 'http://xinan.ziqiang.net.cn/Fq-PpUCF25C61q0muvXAHCok0uK2'
+    wycpath = 'http://xinan.ziqiang.net.cn/AsFace.jpg'
+    fetchImageFromHttp(wycpath)
     # result = FaceExtract(imgpath, 'url')
-    result = FaceExtract(imgpath, 'Local', 'Search')
+    # result = FaceExtract(imgpath, 'Local', 'Search')
     # cv2.imshow('image', result)
     # cv2.waitKey(0)
 

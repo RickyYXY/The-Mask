@@ -18,6 +18,7 @@ import json
 from Sefa.api import code_to_img_api, load_code
 import numpy as np
 import cv2
+import json
 
 # Create your views here.
 @csrf_exempt
@@ -25,6 +26,8 @@ def FaceGenerate(request):
     # 检查上传文本格式
     face_text = request.POST.get('facetext')
     img_url = request.POST.get('img')
+    print(face_text)
+    print(img_url)
     if img_url == '':
         image_path = None
         ret_code = 0
@@ -47,20 +50,25 @@ def FaceGenerate(request):
 def FaceModify(request):
     # modify_params是json格式的字符串, code_url是上一步生成的url地址
     # testparams: {"layer_idx": "all", "num_semantics": "2", "step": "1,2"},step中用逗号分隔
-    modify_params = request.POST.get('modify_params', None)
+    # modify_params = request.POST.get('modify_params', None)
     # print(request.POST)
     # code_path = request.POST.get('code_url', None)
+    layer_idx = request.POST.get('layer_idx', None)
+    num_semantics = request.POST.get('num_semantics', None)
+    step = request.POST.get('step', None)
+    print(layer_idx)
+    print(num_semantics)
+    print(step)
     # 错误处理
     ret_code = 0
-    if modify_params is None:
+    if layer_idx is None or num_semantics is None or step is None:
         ret_code = 1
     if ret_code:
         return JsonResponse({"Error Code": 1, "Error Message": "Failed to get Params", "data": None})
     else:
-        params = json.loads(modify_params)
-        layer_idx = params['layer_idx']
-        num_semantics = int(params['num_semantics'])
-        step = list(map(int, params['step'].split(',')))
+        # params = json.loads(modify_params)
+        num_semantics = int(num_semantics)
+        step = list(map(int, step.split(',')))
         code_py = load_code(os.path.join(wycpath, 'FaceStatic', 'tempnpy', 'code.npy'))
         if code_py is None:
             return JsonResponse({"Error Code": 1, "Error Message": "Failed to get Code, please run FaceGenerate", "data": None})
@@ -93,5 +101,5 @@ def FaceMatch(request):
         return JsonResponse({"Error Code": 1, "Error Message": "Failed to get Image url or Video url", "data": None})
     else:
         result = FaceSearch(image_url, video_url)
-        return JsonResponse({"Error Code": result['Error code'], "Error Message": "SUCCESS", 'data': result['Data']})
+        return JsonResponse({"Error Code": result['Error code'], "Error Message": "SUCCESS", 'data': json.dumps(result['Data'])})
     

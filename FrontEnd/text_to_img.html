@@ -196,16 +196,21 @@ layui.use('form', function(){
 				success:function(res){  
           var code = res["Error Code"].toString();
           var msg = res["Error Message"].toString();
-          var data = res["data"].toString();
+          // var data = res["data"].toString();
           
 					if(code =='0'){   
-					layer.msg("提交成功",{icon: 1, time: 3000},function(){location.reload();}); //提交成功后刷新页面
+            // console.log(msg);
+            window.location.href = "resizer.html" ; 
+					// layer.msg("提交成功",{icon: 1, time: 3000},function(){location.reload();}); //提交成功后刷新页面
 					}   
           else console.log(msg);      
-					}   
+					},
+           error:function(res){
+             console.log('响应失败！');
+         }   
 					
 			});
-    window.location.href = "./resizer.html" ; 
+    //
     });
   });
 
