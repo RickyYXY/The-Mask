@@ -59,9 +59,30 @@
 <script>
 
   // 读取数据
-var PicURL = localStorage.getItem('data');  //获取本地存储中picURL的值
+// var PicURL = localStorage.getItem('picURL');  //获取本地存储中picURL的值
+// console.log(PicURL);
+var PicURL=null;
+function GetUrlPara(){
+    var url = document.location.toString();//获取当前URL
+    console.log(url);
+	if (url.indexOf("?")!= -1) {  //判断URL？后面不为空
+    var arrUrl = url.split("?");//分割？
+    var para = arrUrl[1];//获取参数部分
+    console.log('get para');
+    if(para)//判断传入的参数部分不为空
+    {
+    	var arr = para.split("=");//分割=
+        var res = arr[1];//获取参数的值
+        console.log(res);
+        return res;
+    }   
+	}
+	return null;
+}
+
+PicURL=GetUrlPara();
 console.log(PicURL);
-// var PicURL="http://xinan.ziqiang.net.cn/AsFace.jpg";
+// var PicURL="http://xinan.ziqiang.net.cn/AsFace.jpg"; //调试语句
 var VideoURL = null;
 var token ='h1E1mid8K0zRr848y7uTIPi18GyXnDuzkaLkmW4C:2tfT7r_9TJJj1Ksknp65g9TQgM8=:eyJzY29wZSI6InhpbnhpYW5xdWFuZGFzYWkiLCJkZWFkbGluZSI6MTYzOTUxMDUyMH0=';
 

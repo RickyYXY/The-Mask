@@ -27,17 +27,56 @@
 <script src="./layui/layui.js" charset="utf-8"></script>
 <script src="./layui/jquery-3.6.0.js" charset="utf-8"></script>
 <script>
+var score1,faceimg1,facevideo1,data1;
+// window.addEventListener('message', (e) => {
+//   comsole.log(e);
+//   data=JSON.parse(e);
+//   score=data['score']; 
+//   faceimge=data['faceimg']; 
+//   facevideo=data['facevideo']; 
 
-var score=parent.getMethodValue(score); 
-var faceimge=parent.getMethodValue(faceimg); 
-var facevideo=parent.getMethodValue(facevideo); 
+//     }, false);
+function receiveMessage(event) {
 
-            
-
-$('#MatchScore').text('匹配分数：'+score);
+    var value =JSON.parse(event.data);
+    console.log(value);
+    console.log('hello');
+    score1=value['score']; 
+    faceimg1=value['faceimg']; 
+    facevideo1=value['facevideo'];
+$('#MatchScore').text('匹配分数：'+score1);
 //将图片的url设置给src
-$("#MatchPic").attr("src",faceimg);
-$("#MatchVideo").attr("src",facevideo);
+$("#MatchPic").attr("src",faceimg1);
+$("#MatchVideo").attr("src",facevideo1);
+
+}
+window.onload=function(){
+  window.addEventListener('message',receiveMessage, false);}
+
+
+
+
+
+// console.log(score1);
+
+// console.log(data);
+// var score=parent.getElementsByName("score"); 
+// var faceimge=parent.getElementsByName("faceimg"); 
+// var facevideo=parent.getElementsByName("facevideo"); 
+
+// var score=$("#score",window.parent.document);
+// var faceimge=$("#faceimg",window.parent.document); 
+// var facevideo=$("#facevideo",window.parent.document);  
+
+// var score=80;
+// var faceimg="./img/test_ori.jpg";
+// var facevideo="./img/test_res1.jpg";
+
+// var score=parent.score; 
+// var faceimge=parent.faceimg; 
+// var facevideo=parent.facevideo; 
+
+
 
 
 </script>

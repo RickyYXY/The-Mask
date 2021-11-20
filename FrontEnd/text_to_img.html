@@ -199,9 +199,8 @@ layui.use('form', function(){
           // var data = res["data"].toString();
           
 					if(code =='0'){   
-            // console.log(msg);
-            window.location.href = "resizer.html" ; 
-					// layer.msg("提交成功",{icon: 1, time: 3000},function(){location.reload();}); //提交成功后刷新页面
+            // console.log(msg);          
+					layer.msg("提交成功",{icon: 1, time: 3000},function(){window.location.href = "resizer.html";}); //提交成功后跳转页面
 					}   
           else console.log(msg);      
 					},
@@ -214,9 +213,10 @@ layui.use('form', function(){
     });
   });
 
-// 写入数据
-localStorage.setItem('picURL',PicURL);  //将变量PicURL(值为PicURL)存储至本地
-  
+// 写入数据(调试语句)
+// PicURL='./img/test.ori.jpg';
+// localStorage.setItem('picURL',PicURL);  //将变量PicURL(值为PicURL)存储至本地
+// console.log(PicURL);  
 </script>
 
 

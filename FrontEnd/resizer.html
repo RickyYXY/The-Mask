@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -88,7 +89,15 @@
   <div style="margin-top: 20px;margin-left:10px">参数十
     <div id="slideTest10" class="demo-slider"></div>
   </div>
-  <button id="PostButton" type="button" class="layui-btn layui-btn-normal" style="margin-top:30px;margin-left: 170px" >开始调整</button>
+  <div class="site-demo-button" style="margin-top:30px;margin-left:70px">
+   <button id="PostButton" type="button" class="layui-btn layui-btn-normal" >开始调整</button>
+  
+      <button id="PostButton2" type="button" class="layui-btn layui-btn-normal" >下一步</button>
+    </a>
+  </div>
+  <!-- <div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="demo" style="margin-top:10px;">
+  <div class="layui-progress-bar layui-bg-red" lay-percent="0%"></div>
+  </div> -->
 </div >
 
 <!-- <div id="content" style="width:70%;height:420px;float:left;">
@@ -97,7 +106,7 @@
 </div>
 </div> -->
 
-<img id="ImagePic" alt="文字转图片成功后渲染" style="width:70%;height:420px;float:left;">
+<img id="ImagePic" alt="文字转图片成功后渲染" style="width:70%;max-height:650px;float:left;">
 </div>
 
 
@@ -110,6 +119,10 @@
 
 var v1=5,v2=5,v3=5,v4=5,v5=5,v6=5,v7=5,v8=5,v9=5,v10=5;     //滑块初始值为5
 var layer_index='all';   //layers初始值为all
+// var picURL='./img/test_ori.jpg';
+var picURL=null;
+var str=null;
+
 layui.use('slider', function(){
   var $ = layui.$
   ,slider = layui.slider;
@@ -140,7 +153,7 @@ layui.use('slider', function(){
   }
   });
  
-console.log(v1);
+
 slider.render({
     elem: '#slideTest2'
      ,step: 1 //步长
@@ -205,7 +218,7 @@ slider.render({
      ,max: 10 //最大值
      ,showstep: true //开启间隔点
     ,change: function(value){
-    console.log(value) //动态获取滑块数值
+    // console.log(value) //动态获取滑块数值
     var v6=value;
     //do something
   }
@@ -219,7 +232,7 @@ slider.render({
      ,max: 10 //最大值
      ,showstep: true //开启间隔点
     ,change: function(value){
-    console.log(value) //动态获取滑块数值
+    // console.log(value) //动态获取滑块数值
     var v7=value;
     //do something
   }
@@ -233,7 +246,7 @@ slider.render({
      ,max: 10 //最大值
      ,showstep: true //开启间隔点
     ,change: function(value){
-    console.log(value) //动态获取滑块数值
+    // console.log(value) //动态获取滑块数值
     var v8=value;
     //do something
   }
@@ -247,7 +260,7 @@ slider.render({
      ,max: 10 //最大值
      ,showstep: true //开启间隔点
     ,change: function(value){
-    console.log(value) //动态获取滑块数值
+    // console.log(value) //动态获取滑块数值
     var v9=value;
     //do something
   }
@@ -261,20 +274,22 @@ slider.render({
      ,max: 10 //最大值
      ,showstep: true //开启间隔点
     ,change: function(value){
-    console.log(value) //动态获取滑块数值
+    // console.log(value) //动态获取滑块数值
     var v10=value;
         //do something
   }
   });
 
 });
-    // var step_val=v1+','+v2+','+v3+','+v4+','+v5+','+v6+','+v7+','+v8+','+v9+','+v10;
+
+    
     var PostJSON={
       layer_idx:layer_index,
       num_semantics: "10", 
       step: v1+','+v2+','+v3+','+v4+','+v5+','+v6+','+v7+','+v8+','+v9+','+v10
     }
-    // console.log(typeof(step_val));
+    var step_val=v1+','+v2+','+v3+','+v4+','+v5+','+v6+','+v7+','+v8+','+v9+','+v10;
+    console.log(typeof(step_val));
     // console.log(PostJSON);
     $('#PostButton').on('click',function(){
       $.ajax({
@@ -296,10 +311,12 @@ slider.render({
             if(code =="1")
               console.log(msg);
             else  {
-            var data = res["data"].toString();
+            picURL = res["data"].toString();
              //将图片的url设置给src
-             $("#ImagePic").attr("src",data);
-             localStorage.setItem('data',data);  //将变量PicURL(值为PicURL)存储至本地
+             $("#ImagePic").attr("src", picURL);
+            //  localStorage.setItem('data',data);  //将变量PicURL(值为PicURL)存储至本地
+            str="./match.html?PicURL="+picURL;
+            console.log(str);
              console.log(msg);
             }
          },
@@ -308,8 +325,17 @@ slider.render({
          }
       })
     })
-    
-  
+
+    $('#PostButton2').on('click',function(){
+      if(str!=null)
+      window.open(str);
+      else window.open('./match.html');
+    });
+
+
+
+
+
 </script>
 
 
