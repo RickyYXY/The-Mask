@@ -10,45 +10,46 @@
 </head>
 
 <style type="text/css">
- .toast {
-  display: none;
-  position: fixed;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 18rem;
-  height: 18rem;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #4A4A4B;
-  border-radius: 1rem;
-  color: #f0f0f0;
-  font-size: 2.5rem;
- }
- .load {
-  display: inline-block;
-  margin-bottom: 1.5rem;
-  height: 4rem;
-  width: 4rem;
-  border: 0.4rem solid transparent;
-  border-top-color: white;
-  border-left-color: white;
-  border-bottom-color: white;
-  animation: circle 1s infinite linear;
-  -webkit-animation: circle 1s infinite linear; /* Safari 和 Chrome */
-  border-radius: 50%
- }
-
- @-webkit-keyframes circle {
-  0% {
-   transform: rotate(0deg);
+  .toast {
+   display: none;
+   position: fixed;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   width:5rem;
+   height: 5rem;
+   left: 50%;
+   top: 50%;
+   transform: translate(-50%, -50%);
+   background-color: #4A4A4B;
+   border-radius: 1rem;
+   color: #f0f0f0;
+   font-size: 0.8rem;
+   opacity: 0.3;
   }
-  100% {
-   transform: rotate(-360deg)
+  .load {
+   display: inline-block;
+   margin-bottom: 0.5rem;
+   height: 2rem;
+   width: 2rem;
+   border: 0.2rem solid transparent;
+   border-top-color: white;
+   border-left-color: white;
+   border-bottom-color: white;
+   animation: circle 1s infinite linear;
+   -webkit-animation: circle 1s infinite linear; /* Safari 和 Chrome */
+   border-radius: 50%
   }
- }
-</style>
+ 
+  @-webkit-keyframes circle {
+   0% {
+    transform: rotate(0deg);
+   }
+   100% {
+    transform: rotate(-360deg)
+   }
+  }
+ </style>
 <body>
 
 
