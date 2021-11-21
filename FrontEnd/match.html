@@ -8,6 +8,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="./layui/css/layui.css"  media="all">
 </head>
+
+<style type="text/css">
+ .toast {
+  display: none;
+  position: fixed;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 18rem;
+  height: 18rem;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #4A4A4B;
+  border-radius: 1rem;
+  color: #f0f0f0;
+  font-size: 2.5rem;
+ }
+ .load {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  height: 4rem;
+  width: 4rem;
+  border: 0.4rem solid transparent;
+  border-top-color: white;
+  border-left-color: white;
+  border-bottom-color: white;
+  animation: circle 1s infinite linear;
+  -webkit-animation: circle 1s infinite linear; /* Safari 和 Chrome */
+  border-radius: 50%
+ }
+
+ @-webkit-keyframes circle {
+  0% {
+   transform: rotate(0deg);
+  }
+  100% {
+   transform: rotate(-360deg)
+  }
+ }
+</style>
+
 <body>
 <ul class="layui-nav" lay-filter="">
   <li class="layui-nav-item">
@@ -25,35 +67,40 @@
 
 
 
-<div class="layui-form-item" >
-  <img src="" alt="图片" id="IMG1" style="height:200px">
-  <div class="layui-btn-container" style="width:250px;height:100px;margin-left:68%;margin-top:-150px">
-    <button type="button" class="layui-btn cover" id="control_video_button" >上传视频</button>
+<div class="layui-form-item" style="margin-top:50px">
+  <div style="width:35%;float:left"><img src="" alt="图片" id="IMG1" style="height:300px;"></div>
+  <div class="layui-btn-container" style="float:left;width:65%">
+    <button type="button" class="layui-btn cover" id="control_video_button" style="margin-left:250px">上传视频</button>
     <button type="button" class="layui-btn layui-btn-danger cover" id="control_video_del" >删除视频</button>
     <input type="hidden" id="control_video" value="{$detail.control_video}" name="control_video"/>
     <input type="hidden" id="temp_url_id" value="" name="temp_url_id"/>
-  </div>
-</div>
- 
- <div class="layui-form-item" >
+
+    <div class="layui-form-item" >
     <label class="layui-form-label"></label>
     <div class="layui-input-block">
-        <video src="{$detail.control_video}" controls="controls" id="control_video_demo" style="width:45%;margin-left:50%;margin-top:-20px">                              
+        <video src="{$detail.control_video}" controls="controls" id="control_video_demo" style="margin-top:20px;height:250px">
         </video>
         <p id="demoText"></p>
     </div>
+    </div>
+  </div>
 </div>
+
+  <div class="toast">
+  <span class="load"></span>
+  <span>加载中...</span>
+  </div>
+
   
 </div>
 
-<div style="width: 370px;margin-top:40px;margin:70px auto">
+<div style="width: 370px;margin:40px auto">
   <button id="MatchButoon" type="button" class="layui-btn layui-btn-fluid">开始匹配</button>
 </div>
 
 <div class="layui-hide" id="MatchResult">
     <hr>
 </div>
-
 <script src="./layui/layui.js" charset="utf-8"></script>
 <script src="./layui/jquery-3.6.0.js" charset="utf-8"></script>
 <script>
@@ -122,7 +169,7 @@ var uploadInst = upload.render({
 });
 
 $('#MatchButoon').on('click',function(){
-
+  $('.toast').css({display: 'flex'})
       $.ajax({
          type:'post',
          data:{
@@ -132,6 +179,7 @@ $('#MatchButoon').on('click',function(){
          dataType:'json', 
          url: "http://localhost:8000/MaskApp/facemat/",
          success: function(res) {
+          $('.toast').css({display: 'none'})
             var code = res["Error Code"].toString();
             var msg = res["Error Message"].toString();
             var MatchRes = JSON.parse(res["data"].toString());  //转为json格式

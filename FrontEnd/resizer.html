@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +8,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="./layui/css/layui.css"  media="all">
 </head>
+
+<style type="text/css">
+ .toast {
+  display: none;
+  position: fixed;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 18rem;
+  height: 18rem;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #4A4A4B;
+  border-radius: 1rem;
+  color: #f0f0f0;
+  font-size: 2.5rem;
+ }
+ .load {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  height: 4rem;
+  width: 4rem;
+  border: 0.4rem solid transparent;
+  border-top-color: white;
+  border-left-color: white;
+  border-bottom-color: white;
+  animation: circle 1s infinite linear;
+  -webkit-animation: circle 1s infinite linear; /* Safari 和 Chrome */
+  border-radius: 50%
+ }
+
+ @-webkit-keyframes circle {
+  0% {
+   transform: rotate(0deg);
+  }
+  100% {
+   transform: rotate(-360deg)
+  }
+ }
+</style>
 <body>
 
 
@@ -95,10 +135,17 @@
       <button id="PostButton2" type="button" class="layui-btn layui-btn-normal" >下一步</button>
     </a>
   </div>
+
   <!-- <div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="demo" style="margin-top:10px;">
   <div class="layui-progress-bar layui-bg-red" lay-percent="0%"></div>
   </div> -->
-</div >
+  <div class="toast">
+    <span class="load"></span>
+    <span>加载中...</span>
+    </div>
+  
+    </div>
+  </div >
 
 <!-- <div id="content" style="width:70%;height:420px;float:left;">
 <div class="layui-upload-drag" id="test10" style="width:93%;height:500px;">
@@ -302,7 +349,7 @@ slider.render({
     console.log(PostJSON);
     // var step_val=v1+','+v2+','+v3+','+v4+','+v5+','+v6+','+v7+','+v8+','+v9+','+v10;
     // console.log(step_val);
-
+    $('.toast').css({display: 'flex'})
       $.ajax({
          url: "http://localhost:8000/MaskApp/facemod/",
          type:'post',
@@ -316,6 +363,7 @@ slider.render({
         //  contentType:'application/json;charset=UTF-8', 
         // contentType:'multipart/form-data',
          success: function(res) {
+          $('.toast').css({display: 'none'})
             var code = res["Error Code"].toString();
             var msg = res["Error Message"].toString();
             // var data = res["data"].toString();
