@@ -201,8 +201,20 @@ $('#MatchButoon').on('click',function(){
                 area:['800px','550px'],
                 fix:false,
                 content:"match_result.html",
-                
-            });          
+            });
+           
+            setTimeout(function(){
+              var frame = document.getElementById('layui-layer-iframe1'); 
+            // console.log(data);
+            var output=2;
+            output=frame.contentWindow.postMessage(JSON.stringify(data), '*');
+            console.log(output);
+            },1000)
+            // var output=2;
+            // var output = window.postMessage(JSON.stringify(data), '*');
+            // console.log(output);
+            // Window.postMessage(JSON.stringify(data), '*');   
+
            }
             else {            
              layer.alert(msg);
