@@ -46,12 +46,12 @@
   <div class="layui-form-item" style="margin-top: 20px;">
    <label class="layui-form-label">Layers </label>
     <div class="layui-input-block">
-      <select name="Model to Interpret" lay-filter="layers_idx">
+      <select name="Model to Interpret" lay-filter="layers_idx" id='select'>
         <option value="" selected="">请选择</option>
-        <option value="0">all</option>
-        <option value="1">0-1</option>
-        <option value="2">2-5</option>
-        <option value="3">6-13</option>
+        <option value="all">all</option>
+        <option value="0-1">0-1</option>
+        <option value="2-5">2-5</option>
+        <option value="6-13">6-13</option>
       </select>
     </div>
   </div>
@@ -118,10 +118,20 @@
 <script>
 
 var v1=5,v2=5,v3=5,v4=5,v5=5,v6=5,v7=5,v8=5,v9=5,v10=5;     //滑块初始值为5
-var layer_index='all';   //layers初始值为all
+var layer_index=null;   //layers初始值为all
 // var picURL='./img/test_ori.jpg';
 var picURL=null;
 var str=null;
+
+// layui.use('form', function(){
+//   var form = layui.form;
+
+//    form.on('select(layers_idx)', function (data) {
+//     layer_index = data.value;
+//     form.render('select'); 
+//   })
+
+//   });
 
 layui.use('slider', function(){
   var $ = layui.$
@@ -129,15 +139,7 @@ layui.use('slider', function(){
 
   
 
-  layui.use('form', function(){
-  var form = layui.form;
-
-   form.on('select(layers_idx)', function (data) {
-    layer_index = data.value;
-    form.render('select'); 
-  })
-
-  });
+  
 
   //设置最大最小值
   slider.render({
@@ -163,7 +165,7 @@ slider.render({
      ,showstep: true //开启间隔点
     ,change: function(value){
     console.log(value); //动态获取滑块数值
-    var v2=value;
+    v2=value;
     //do something
   }
   });
@@ -177,7 +179,7 @@ slider.render({
      ,showstep: true //开启间隔点
     ,change: function(value){
     console.log(value) //动态获取滑块数值
-    var v3=value;
+    v3=value;
     //do something
   }
   });
@@ -191,7 +193,7 @@ slider.render({
      ,showstep: true //开启间隔点
     ,change: function(value){
     console.log(value) //动态获取滑块数值
-    var v4=value;
+    v4=value;
     //do something
   }
   });
@@ -205,7 +207,7 @@ slider.render({
      ,showstep: true //开启间隔点
     ,change: function(value){
     console.log(value) //动态获取滑块数值
-    var v5=value;
+    v5=value;
     //do something
   }
   });
@@ -219,7 +221,7 @@ slider.render({
      ,showstep: true //开启间隔点
     ,change: function(value){
     // console.log(value) //动态获取滑块数值
-    var v6=value;
+    v6=value;
     //do something
   }
   });
@@ -233,7 +235,7 @@ slider.render({
      ,showstep: true //开启间隔点
     ,change: function(value){
     // console.log(value) //动态获取滑块数值
-    var v7=value;
+    v7=value;
     //do something
   }
   });
@@ -247,7 +249,7 @@ slider.render({
      ,showstep: true //开启间隔点
     ,change: function(value){
     // console.log(value) //动态获取滑块数值
-    var v8=value;
+    v8=value;
     //do something
   }
   });
@@ -261,7 +263,8 @@ slider.render({
      ,showstep: true //开启间隔点
     ,change: function(value){
     // console.log(value) //动态获取滑块数值
-    var v9=value;
+    v9=value;
+    console.log(v9);
     //do something
   }
   });
@@ -281,17 +284,25 @@ slider.render({
   });
 
 });
-
     
-    var PostJSON={
+    
+    // console.log(PostJSON);
+    $('#PostButton').on('click',function(){
+      if($("#select").val()==null){
+      layer_index='all';
+      }
+      else {
+        layer_index=$("#select").val();
+      }
+      var PostJSON={
       layer_idx:layer_index,
       num_semantics: "10", 
       step: v1+','+v2+','+v3+','+v4+','+v5+','+v6+','+v7+','+v8+','+v9+','+v10
     }
-    var step_val=v1+','+v2+','+v3+','+v4+','+v5+','+v6+','+v7+','+v8+','+v9+','+v10;
-    console.log(typeof(step_val));
-    // console.log(PostJSON);
-    $('#PostButton').on('click',function(){
+    console.log(PostJSON);
+    // var step_val=v1+','+v2+','+v3+','+v4+','+v5+','+v6+','+v7+','+v8+','+v9+','+v10;
+    // console.log(step_val);
+
       $.ajax({
          url: "http://localhost:8000/MaskApp/facemod/",
          type:'post',
