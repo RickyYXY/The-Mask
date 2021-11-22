@@ -207,6 +207,11 @@ $('#MatchButoon').on('click',function(){
             setTimeout(function(){
               var frame = document.getElementById('layui-layer-iframe1'); 
             // console.log(data);
+            var data ={
+                score:score,
+                faceimg:faceimg,
+                facevideo:facevideo
+            }
             var output=2;
             output=frame.contentWindow.postMessage(JSON.stringify(data), '*');
             console.log(output);
