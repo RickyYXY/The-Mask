@@ -8,6 +8,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="./layui/css/layui.css"  media="all">
 </head>
+
+<style type="text/css">
+  .toast {
+   display: none;
+   position: fixed;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   width:5rem;
+   height: 5rem;
+   left: 50%;
+   top: 50%;
+   transform: translate(-50%, -50%);
+   background-color: #4A4A4B;
+   border-radius: 1rem;
+   color: #f0f0f0;
+   font-size: 0.8rem;
+   opacity: 0.3;
+  }
+  .load {
+   display: inline-block;
+   margin-bottom: 0.5rem;
+   height: 2rem;
+   width: 2rem;
+   border: 0.2rem solid transparent;
+   border-top-color: white;
+   border-left-color: white;
+   border-bottom-color: white;
+   animation: circle 1s infinite linear;
+   -webkit-animation: circle 1s infinite linear; /* Safari 和 Chrome */
+   border-radius: 50%
+  }
+ 
+  @-webkit-keyframes circle {
+   0% {
+    transform: rotate(0deg);
+   }
+   100% {
+    transform: rotate(-360deg)
+   }
+  }
+ </style>
 <body>
 
 
@@ -45,12 +87,12 @@
   <div class="layui-form-item" style="margin-top: 20px;">
    <label class="layui-form-label">Layers </label>
     <div class="layui-input-block">
-      <select name="Model to Interpret" lay-filter="layers_idx">
+      <select name="Model to Interpret" lay-filter="layers_idx" id='select'>
         <option value="" selected="">请选择</option>
-        <option value="0">all</option>
-        <option value="1">0-1</option>
-        <option value="2">2-5</option>
-        <option value="3">6-13</option>
+        <option value="all">all</option>
+        <option value="0-1">0-1</option>
+        <option value="2-5">2-5</option>
+        <option value="6-13">6-13</option>
       </select>
     </div>
   </div>
@@ -88,8 +130,23 @@
   <div style="margin-top: 20px;margin-left:10px">参数十
     <div id="slideTest10" class="demo-slider"></div>
   </div>
-  <button id="PostButton" type="button" class="layui-btn layui-btn-normal" style="margin-top:30px;margin-left: 170px" >开始调整</button>
-</div >
+  <div class="site-demo-button" style="margin-top:30px;margin-left:70px">
+   <button id="PostButton" type="button" class="layui-btn layui-btn-normal" >开始调整</button>
+  
+      <button id="PostButton2" type="button" class="layui-btn layui-btn-normal" >下一步</button>
+    </a>
+  </div>
+
+  <!-- <div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="demo" style="margin-top:10px;">
+  <div class="layui-progress-bar layui-bg-red" lay-percent="0%"></div>
+  </div> -->
+  <div class="toast">
+    <span class="load"></span>
+    <span>加载中...</span>
+    </div>
+  
+    </div>
+  </div >
 
 <!-- <div id="content" style="width:70%;height:420px;float:left;">
 <div class="layui-upload-drag" id="test10" style="width:93%;height:500px;">
@@ -97,7 +154,7 @@
 </div>
 </div> -->
 
-<img id="ImagePic" alt="文字转图片成功后渲染" style="width:70%;height:420px;float:left;">
+<img id="ImagePic" alt="文字转图片成功后渲染" style="width:70%;max-height:650px;float:left;">
 </div>
 
 
@@ -109,22 +166,28 @@
 <script>
 
 var v1=5,v2=5,v3=5,v4=5,v5=5,v6=5,v7=5,v8=5,v9=5,v10=5;     //滑块初始值为5
-var layer_index='all';   //layers初始值为all
+var layer_index=null;   //layers初始值为all
+// var picURL='./img/test_ori.jpg';
+var picURL=null;
+var str=null;
+
+// layui.use('form', function(){
+//   var form = layui.form;
+
+//    form.on('select(layers_idx)', function (data) {
+//     layer_index = data.value;
+//     form.render('select'); 
+//   })
+
+//   });
+
 layui.use('slider', function(){
   var $ = layui.$
   ,slider = layui.slider;
 
   
 
-  layui.use('form', function(){
-  var form = layui.form;
-
-   form.on('select(layers_idx)', function (data) {
-    layer_index = data.value;
-    form.render('select'); 
-  })
-
-  });
+  
 
   //设置最大最小值
   slider.render({
@@ -140,7 +203,7 @@ layui.use('slider', function(){
   }
   });
  
-console.log(v1);
+
 slider.render({
     elem: '#slideTest2'
      ,step: 1 //步长
@@ -150,7 +213,7 @@ slider.render({
      ,showstep: true //开启间隔点
     ,change: function(value){
     console.log(value); //动态获取滑块数值
-    var v2=value;
+    v2=value;
     //do something
   }
   });
@@ -164,7 +227,7 @@ slider.render({
      ,showstep: true //开启间隔点
     ,change: function(value){
     console.log(value) //动态获取滑块数值
-    var v3=value;
+    v3=value;
     //do something
   }
   });
@@ -178,7 +241,7 @@ slider.render({
      ,showstep: true //开启间隔点
     ,change: function(value){
     console.log(value) //动态获取滑块数值
-    var v4=value;
+    v4=value;
     //do something
   }
   });
@@ -192,7 +255,7 @@ slider.render({
      ,showstep: true //开启间隔点
     ,change: function(value){
     console.log(value) //动态获取滑块数值
-    var v5=value;
+    v5=value;
     //do something
   }
   });
@@ -205,8 +268,8 @@ slider.render({
      ,max: 10 //最大值
      ,showstep: true //开启间隔点
     ,change: function(value){
-    console.log(value) //动态获取滑块数值
-    var v6=value;
+    // console.log(value) //动态获取滑块数值
+    v6=value;
     //do something
   }
   });
@@ -219,8 +282,8 @@ slider.render({
      ,max: 10 //最大值
      ,showstep: true //开启间隔点
     ,change: function(value){
-    console.log(value) //动态获取滑块数值
-    var v7=value;
+    // console.log(value) //动态获取滑块数值
+    v7=value;
     //do something
   }
   });
@@ -233,8 +296,8 @@ slider.render({
      ,max: 10 //最大值
      ,showstep: true //开启间隔点
     ,change: function(value){
-    console.log(value) //动态获取滑块数值
-    var v8=value;
+    // console.log(value) //动态获取滑块数值
+    v8=value;
     //do something
   }
   });
@@ -247,8 +310,9 @@ slider.render({
      ,max: 10 //最大值
      ,showstep: true //开启间隔点
     ,change: function(value){
-    console.log(value) //动态获取滑块数值
-    var v9=value;
+    // console.log(value) //动态获取滑块数值
+    v9=value;
+    console.log(v9);
     //do something
   }
   });
@@ -261,22 +325,32 @@ slider.render({
      ,max: 10 //最大值
      ,showstep: true //开启间隔点
     ,change: function(value){
-    console.log(value) //动态获取滑块数值
+    // console.log(value) //动态获取滑块数值
     var v10=value;
         //do something
   }
   });
 
 });
-    // var step_val=v1+','+v2+','+v3+','+v4+','+v5+','+v6+','+v7+','+v8+','+v9+','+v10;
-    var PostJSON={
+    
+    
+    // console.log(PostJSON);
+    $('#PostButton').on('click',function(){
+      if($("#select").val()==null){
+      layer_index='all';
+      }
+      else {
+        layer_index=$("#select").val();
+      }
+      var PostJSON={
       layer_idx:layer_index,
       num_semantics: "10", 
       step: v1+','+v2+','+v3+','+v4+','+v5+','+v6+','+v7+','+v8+','+v9+','+v10
     }
-    // console.log(typeof(step_val));
-    // console.log(PostJSON);
-    $('#PostButton').on('click',function(){
+    console.log(PostJSON);
+    // var step_val=v1+','+v2+','+v3+','+v4+','+v5+','+v6+','+v7+','+v8+','+v9+','+v10;
+    // console.log(step_val);
+    $('.toast').css({display: 'flex'})
       $.ajax({
          url: "http://localhost:8000/MaskApp/facemod/",
          type:'post',
@@ -290,16 +364,19 @@ slider.render({
         //  contentType:'application/json;charset=UTF-8', 
         // contentType:'multipart/form-data',
          success: function(res) {
+          $('.toast').css({display: 'none'})
             var code = res["Error Code"].toString();
             var msg = res["Error Message"].toString();
             // var data = res["data"].toString();
             if(code =="1")
               console.log(msg);
             else  {
-            var data = res["data"].toString();
+            picURL = res["data"].toString();
              //将图片的url设置给src
-             $("#ImagePic").attr("src",data);
-             localStorage.setItem('data',data);  //将变量PicURL(值为PicURL)存储至本地
+             $("#ImagePic").attr("src", picURL);
+            //  localStorage.setItem('data',data);  //将变量PicURL(值为PicURL)存储至本地
+            str="./match.html?PicURL="+picURL;
+            console.log(str);
              console.log(msg);
             }
          },
@@ -308,8 +385,17 @@ slider.render({
          }
       })
     })
-    
-  
+
+    $('#PostButton2').on('click',function(){
+      if(str!=null)
+      window.open(str);
+      else window.open('./match.html');
+    });
+
+
+
+
+
 </script>
 
 

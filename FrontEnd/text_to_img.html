@@ -26,7 +26,7 @@
 
 
 <div style=" text-align:center;margin-top:40px;">
-<form class="layui-form" action="" style="margin-top: 10px;width:50%;float:left">
+<form class="layui-form" action="" style="width:50%;float:left">
  <div class="layui-form-item layui-form-text">
     <div class="layui-input-block">
       <textarea placeholder="请输入内容"  class="layui-textarea" id="UserInput" name="InputText"></textarea>
@@ -133,7 +133,7 @@
         <p>点击上传，或将文件拖拽到此处</p>
         <div class="layui-hide" id="uploadDemoView">
         <hr>
-        <img src="" alt="上传成功后渲染" style="max-width: 600px">
+        <img src="" alt="上传成功后渲染" style="max-height: 500px;max-width: 500px">
     </div>
 </div>
 </div>
@@ -142,6 +142,7 @@
   <!-- <a href="resizer.html" class="layui-btn layui-btn-fluid">生成人脸</a> -->
   <button type="submit" class="layui-btn layui-btn-fluid" lay-submit="" lay-filter="GenButton">生成人脸</button>
 </div>
+
 
 <script src="./layui/layui.js" charset="utf-8"></script>
 <script src="./layui/jquery-3.6.0.js" charset="utf-8"></script>
@@ -199,9 +200,8 @@ layui.use('form', function(){
           // var data = res["data"].toString();
           
 					if(code =='0'){   
-            // console.log(msg);
-            window.location.href = "resizer.html" ; 
-					// layer.msg("提交成功",{icon: 1, time: 3000},function(){location.reload();}); //提交成功后刷新页面
+            // console.log(msg);          
+					layer.msg("提交成功",{icon: 1, time: 3000},function(){window.location.href = "resizer.html";}); //提交成功后跳转页面
 					}   
           else console.log(msg);      
 					},
@@ -214,9 +214,10 @@ layui.use('form', function(){
     });
   });
 
-// 写入数据
-localStorage.setItem('picURL',PicURL);  //将变量PicURL(值为PicURL)存储至本地
-  
+// 写入数据(调试语句)
+// PicURL='./img/test.ori.jpg';
+// localStorage.setItem('picURL',PicURL);  //将变量PicURL(值为PicURL)存储至本地
+// console.log(PicURL);  
 </script>
 
 

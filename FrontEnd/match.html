@@ -8,6 +8,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="./layui/css/layui.css"  media="all">
 </head>
+
+<style type="text/css">
+ .toast {
+  display: none;
+  position: fixed;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width:5rem;
+  height: 5rem;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #4A4A4B;
+  border-radius: 1rem;
+  color: #f0f0f0;
+  font-size: 0.8rem;
+  opacity: 0.3;
+ }
+ .load {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  height: 2rem;
+  width: 2rem;
+  border: 0.2rem solid transparent;
+  border-top-color: white;
+  border-left-color: white;
+  border-bottom-color: white;
+  animation: circle 1s infinite linear;
+  -webkit-animation: circle 1s infinite linear; /* Safari 和 Chrome */
+  border-radius: 50%
+ }
+
+ @-webkit-keyframes circle {
+  0% {
+   transform: rotate(0deg);
+  }
+  100% {
+   transform: rotate(-360deg)
+  }
+ }
+</style>
+
 <body>
 <ul class="layui-nav" lay-filter="">
   <li class="layui-nav-item">
@@ -25,43 +68,69 @@
 
 
 
-<div class="layui-form-item" >
-  <img src="" alt="图片" id="IMG1" style="height:200px">
-  <div class="layui-btn-container" style="width:250px;height:100px;margin-left:68%;margin-top:-150px">
-    <button type="button" class="layui-btn cover" id="control_video_button" >上传视频</button>
+<div class="layui-form-item" style="margin-top:50px">
+  <div style="width:35%;float:left"><img src="" alt="图片" id="IMG1" style="height:300px;"></div>
+  <div class="layui-btn-container" style="float:left;width:65%">
+    <button type="button" class="layui-btn cover" id="control_video_button" style="margin-left:250px">上传视频</button>
     <button type="button" class="layui-btn layui-btn-danger cover" id="control_video_del" >删除视频</button>
     <input type="hidden" id="control_video" value="{$detail.control_video}" name="control_video"/>
     <input type="hidden" id="temp_url_id" value="" name="temp_url_id"/>
-  </div>
-</div>
- 
- <div class="layui-form-item" >
+
+    <div class="layui-form-item" >
     <label class="layui-form-label"></label>
     <div class="layui-input-block">
-        <video src="{$detail.control_video}" controls="controls" id="control_video_demo" style="width:45%;margin-left:50%;margin-top:-20px">                              
+        <video src="{$detail.control_video}" controls="controls" id="control_video_demo" style="margin-top:20px;height:250px">
         </video>
         <p id="demoText"></p>
     </div>
+    </div>
+  </div>
 </div>
+
+  <div class="toast">
+  <span class="load"></span>
+  <span>加载中...</span>
+  </div>
+
   
 </div>
 
-<div style="width: 370px;margin-top:40px;margin:70px auto">
+<div style="width: 370px;margin:40px auto">
   <button id="MatchButoon" type="button" class="layui-btn layui-btn-fluid">开始匹配</button>
 </div>
 
 <div class="layui-hide" id="MatchResult">
     <hr>
 </div>
-
 <script src="./layui/layui.js" charset="utf-8"></script>
 <script src="./layui/jquery-3.6.0.js" charset="utf-8"></script>
 <script>
 
   // 读取数据
-var PicURL = localStorage.getItem('data');  //获取本地存储中picURL的值
+// var PicURL = localStorage.getItem('picURL');  //获取本地存储中picURL的值
+// console.log(PicURL);
+var PicURL=null;
+function GetUrlPara(){
+    var url = document.location.toString();//获取当前URL
+    console.log(url);
+	if (url.indexOf("?")!= -1) {  //判断URL？后面不为空
+    var arrUrl = url.split("?");//分割？
+    var para = arrUrl[1];//获取参数部分
+    console.log('get para');
+    if(para)//判断传入的参数部分不为空
+    {
+    	var arr = para.split("=");//分割=
+        var res = arr[1];//获取参数的值
+        console.log(res);
+        return res;
+    }   
+	}
+	return null;
+}
+
+PicURL=GetUrlPara();
 console.log(PicURL);
-// var PicURL="http://xinan.ziqiang.net.cn/AsFace.jpg";
+// var PicURL="http://xinan.ziqiang.net.cn/AsFace.jpg"; //调试语句
 var VideoURL = null;
 var token ='h1E1mid8K0zRr848y7uTIPi18GyXnDuzkaLkmW4C:2tfT7r_9TJJj1Ksknp65g9TQgM8=:eyJzY29wZSI6InhpbnhpYW5xdWFuZGFzYWkiLCJkZWFkbGluZSI6MTYzOTUxMDUyMH0=';
 
@@ -101,7 +170,7 @@ var uploadInst = upload.render({
 });
 
 $('#MatchButoon').on('click',function(){
-
+  $('.toast').css({display: 'flex'})
       $.ajax({
          type:'post',
          data:{
@@ -111,6 +180,7 @@ $('#MatchButoon').on('click',function(){
          dataType:'json', 
          url: "http://localhost:8000/MaskApp/facemat/",
          success: function(res) {
+          $('.toast').css({display: 'none'})
             var code = res["Error Code"].toString();
             var msg = res["Error Message"].toString();
             var MatchRes = JSON.parse(res["data"].toString());  //转为json格式
@@ -132,8 +202,20 @@ $('#MatchButoon').on('click',function(){
                 area:['800px','550px'],
                 fix:false,
                 content:"match_result.html",
-                
-            });          
+            });
+           
+            setTimeout(function(){
+              var frame = document.getElementById('layui-layer-iframe1'); 
+            // console.log(data);
+            var output=2;
+            output=frame.contentWindow.postMessage(JSON.stringify(data), '*');
+            console.log(output);
+            },1000)
+            // var output=2;
+            // var output = window.postMessage(JSON.stringify(data), '*');
+            // console.log(output);
+            // Window.postMessage(JSON.stringify(data), '*');   
+
            }
             else {            
              layer.alert(msg);
