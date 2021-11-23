@@ -8,21 +8,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="./layui/css/layui.css"  media="all">
 </head>
-
+<style type="text/css">
+ .tablebox {
+        width:50%;
+        display: table-cell;
+        /*水平居中*/
+        text-align: center;
+    }
+    .tablebox span{
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+    }
+    .tablebox img {
+        vertical-align:middle;
+    }
+</style>
 <body>
 
 <div style="margin-top:15px;margin-left:20px">
-    <li><span class="layui-font-20" id="MatchScore">在此渲染数据</span></li>  
+    <li><span class="layui-font-20" id="MatchScore">在此渲染数据</span></li>
 </div>
 
-<div>
-    
+
+
+<!--
 <table><tr>
     <td><img id="MatchPic" alt="图片匹配结果"  style="width:100%;height:420px;float:left;top:20px" src=""></td>
     <td><img id="MatchVideo" alt="视频匹配结果" style="width:100%;height:420px;float:left;top:20px" src=""></td>
     </tr></table>
 </div>
-
+-->
+<div>
+  <div class="tablebox"><span></span>
+    <img id="MatchPic" alt="图片匹配结果" src="">
+  </div>
+  <div class="tablebox"><span></span>
+    <img id="MatchVideo" alt="视频匹配结果" src="">
+  </div>
+</div>
 
 <script src="./layui/layui.js" charset="utf-8"></script>
 <script src="./layui/jquery-3.6.0.js" charset="utf-8"></script>
@@ -31,9 +55,9 @@ var score1,faceimg1,facevideo1,data1;
 // window.addEventListener('message', (e) => {
 //   comsole.log(e);
 //   data=JSON.parse(e);
-//   score=data['score']; 
-//   faceimge=data['faceimg']; 
-//   facevideo=data['facevideo']; 
+//   score=data['score'];
+//   faceimge=data['faceimg'];
+//   facevideo=data['facevideo'];
 
 //     }, false);
 function receiveMessage(event) {
@@ -41,8 +65,8 @@ function receiveMessage(event) {
     var value =JSON.parse(event.data);
     console.log(value);
     console.log('hello');
-    score1=value['score']; 
-    faceimg1=value['faceimg']; 
+    score1=value['score'];
+    faceimg1=value['faceimg'];
     facevideo1=value['facevideo'];
 $('#MatchScore').text('匹配分数：'+score1);
 //将图片的url设置给src
@@ -60,21 +84,21 @@ window.onload=function(){
 // console.log(score1);
 
 // console.log(data);
-// var score=parent.getElementsByName("score"); 
-// var faceimge=parent.getElementsByName("faceimg"); 
-// var facevideo=parent.getElementsByName("facevideo"); 
+// var score=parent.getElementsByName("score");
+// var faceimge=parent.getElementsByName("faceimg");
+// var facevideo=parent.getElementsByName("facevideo");
 
 // var score=$("#score",window.parent.document);
-// var faceimge=$("#faceimg",window.parent.document); 
-// var facevideo=$("#facevideo",window.parent.document);  
+// var faceimge=$("#faceimg",window.parent.document);
+// var facevideo=$("#facevideo",window.parent.document);
 
 // var score=80;
 // var faceimg="./img/test_ori.jpg";
 // var facevideo="./img/test_res1.jpg";
 
-// var score=parent.score; 
-// var faceimge=parent.faceimg; 
-// var facevideo=parent.facevideo; 
+// var score=parent.score;
+// var faceimge=parent.faceimg;
+// var facevideo=parent.facevideo;
 
 
 

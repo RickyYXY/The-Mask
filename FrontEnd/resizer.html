@@ -49,6 +49,21 @@
     transform: rotate(-360deg)
    }
   }
+    .tablebox {
+        width:1000px;
+        height:650px;
+        display: table-cell;
+        /*水平居中*/
+        text-align: center;
+    }
+    .tablebox span{
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+    }
+    .tablebox img {
+        vertical-align:middle;
+    }
  </style>
 <body>
 
@@ -148,17 +163,17 @@
     </div>
   </div >
 
-<!-- <div id="content" style="width:70%;height:420px;float:left;">
-<div class="layui-upload-drag" id="test10" style="width:93%;height:500px;">
-  <img src="" alt="文字转图片成功后渲染">
-</div>
-</div> -->
 
+<!--
 <img id="ImagePic" alt="文字转图片成功后渲染" style="max-width:70%;max-height:650px;float:left;">
 </div>
+-->
+<div class="tablebox">
+  <span></span>
+<img id="ImagePic" alt="文字转图片成功后渲染" style="max-width:70%;max-height:650px;">
+</div>
 
-
-  <!-- <a href="match.html" class="layui-btn layui-btn-fluid" style="width:370px;margin:170px;margin-top:200px">下一步</a> -->
+<!-- <a href="match.html" class="layui-btn layui-btn-fluid" style="width:370px;margin:170px;margin-top:200px">下一步</a> -->
   
 </div>
 <script src="./layui/layui.js" charset="utf-8"></script>

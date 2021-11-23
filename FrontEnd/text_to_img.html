@@ -8,6 +8,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="./layui/css/layui.css"  media="all">
 </head>
+<style type="text/css">
+  .toast {
+   display: none;
+   position: fixed;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   width:5rem;
+   height: 5rem;
+   left: 50%;
+   top: 50%;
+   transform: translate(-50%, -50%);
+   background-color: #4A4A4B;
+   border-radius: 1rem;
+   color: #f0f0f0;
+   font-size: 0.8rem;
+   opacity: 0.3;
+  }
+  .load {
+   display: inline-block;
+   margin-bottom: 0.5rem;
+   height: 2rem;
+   width: 2rem;
+   border: 0.2rem solid transparent;
+   border-top-color: white;
+   border-left-color: white;
+   border-bottom-color: white;
+   animation: circle 1s infinite linear;
+   -webkit-animation: circle 1s infinite linear; /* Safari 和 Chrome */
+   border-radius: 50%
+  }
+ 
+  @-webkit-keyframes circle {
+   0% {
+    transform: rotate(0deg);
+   }
+   100% {
+    transform: rotate(-360deg)
+   }
+  }
+    .tablebox {
+        width:1000px;
+        height:650px;
+        display: table-cell;
+        /*水平居中*/
+        text-align: center;
+    }
+    .tablebox span{
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+    }
+    .tablebox img {
+        vertical-align:middle;
+    }
+ </style>
 <body>
 
 <ul class="layui-nav" lay-filter="">
@@ -128,6 +184,14 @@
   </div>
 </form>
 
+<div class="toast">
+  <span class="load"></span>
+  <span>加载中...</span>
+  </div>
+
+  </div>
+</div >
+
 <div class="layui-upload-drag" id="UploadPic" style="width:40%;height:550px;float:left">
         <i class="layui-icon"></i>
         <p>点击上传，或将文件拖拽到此处</p>
@@ -185,7 +249,7 @@ layui.use('form', function(){
 
   //监听提交
   form.on('submit(GenButton)', function(data){
-    
+    $('.toast').css({display: 'flex'})
     $.ajax({ 
 				url:'http://localhost:8000/MaskApp/facegen/',   
 				method:'post',   
@@ -195,6 +259,7 @@ layui.use('form', function(){
         },    
 				dataType:'JSON',    
 				success:function(res){  
+          $('.toast').css({display: 'none'})
           var code = res["Error Code"].toString();
           var msg = res["Error Message"].toString();
           // var data = res["data"].toString();
