@@ -186,14 +186,13 @@ $('#MatchButoon').on('click',function(){
           $('.toast').css({display: 'none'})
             var code = res["Error Code"].toString();
             var msg = res["Error Message"].toString();
+           
+            if(code =="0"){
             var MatchRes = JSON.parse(res["data"].toString());  //转为json格式
-
             var score = MatchRes['match score'];
             var m_result = MatchRes['match result'];
             var faceimg = MatchRes['ExampleFace'];       
             var facevideo = MatchRes['SearchFace'];
-            
-            if(code =="0"){
               console.log(m_result);  
             
               console.log(faceimg);
