@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <title>Layui</title>
@@ -8,284 +8,234 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="./layui/css/layui.css"  media="all">
 </head>
-<style type="text/css">
-  .toast {
-   display: none;
-   position: fixed;
-   flex-direction: column;
-   justify-content: center;
-   align-items: center;
-   width:5rem;
-   height: 5rem;
-   left: 50%;
-   top: 50%;
-   transform: translate(-50%, -50%);
-   background-color: #4A4A4B;
-   border-radius: 1rem;
-   color: #f0f0f0;
-   font-size: 0.8rem;
-   opacity: 0.3;
-  }
-  .load {
-   display: inline-block;
-   margin-bottom: 0.5rem;
-   height: 2rem;
-   width: 2rem;
-   border: 0.2rem solid transparent;
-   border-top-color: white;
-   border-left-color: white;
-   border-bottom-color: white;
-   animation: circle 1s infinite linear;
-   -webkit-animation: circle 1s infinite linear; /* Safari 和 Chrome */
-   border-radius: 50%
-  }
- 
-  @-webkit-keyframes circle {
-   0% {
-    transform: rotate(0deg);
-   }
-   100% {
-    transform: rotate(-360deg)
-   }
-  }
-    .tablebox {
-        width:1000px;
-        height:650px;
-        display: table-cell;
-        /*水平居中*/
-        text-align: center;
-    }
-    .tablebox span{
-        display: inline-block;
-        height: 100%;
-        vertical-align: middle;
-    }
-    .tablebox img {
-        vertical-align:middle;
-    }
- </style>
-<body>
 
+<style type="text/css">
+ .toast {
+  display: none;
+  position: fixed;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width:5rem;
+  height: 5rem;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #4A4A4B;
+  border-radius: 1rem;
+  color: #f0f0f0;
+  font-size: 0.8rem;
+  opacity: 0.3;
+ }
+ .load {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  height: 2rem;
+  width: 2rem;
+  border: 0.2rem solid transparent;
+  border-top-color: white;
+  border-left-color: white;
+  border-bottom-color: white;
+  animation: circle 1s infinite linear;
+  -webkit-animation: circle 1s infinite linear; /* Safari 和 Chrome */
+  border-radius: 50%
+ }
+
+ @-webkit-keyframes circle {
+  0% {
+   transform: rotate(0deg);
+  }
+  100% {
+   transform: rotate(-360deg)
+  }
+ }
+</style>
+
+<body>
 <ul class="layui-nav" lay-filter="">
   <li class="layui-nav-item">
     <a href=""><img src="//t.cn/RCzsdCq" class="layui-nav-img">登录</a>
     <dl class="layui-nav-child">
-      <dd><a href="./register.html">修改信息</a></dd>
+      <dd><a href="javascript:;">修改信息</a></dd>
       <dd><a href="javascript:;">安全管理</a></dd>
       <dd><a href="javascript:;">退出</a></dd>
     </dl>
   </li>
-  <li class="layui-nav-item layui-this"><a href="./text_to_img.html">文字转图片</a></li>
-  <li class="layui-nav-item"><a href="./resizer.html">图片调整</a></li>
-  <li class="layui-nav-item"><a href="./match.html">图片匹配</a></li>
+  <li class="layui-nav-item "><a href="./text_to_img.html">文字转图片</a></li>
+  <li class="layui-nav-item "><a href="./resizer.html">图片调整</a></li>
+  <li class="layui-nav-item layui-this"><a href="./match.html">图片匹配</a></li>
 </ul>
 
 
-<div style=" text-align:center;margin-top:40px;">
-<form class="layui-form" action="" style="width:50%;float:left">
- <div class="layui-form-item layui-form-text">
+
+<div class="layui-form-item" style="margin-top:50px">
+    <div style="width:40%;float:left">
+    <!--<div style="text-align:center">-->
+   <img src="" alt="图片" id="IMG1" style="height:320px;float:right">
+  </div>
+  <div class="layui-btn-container" style="float:left;width:60%">
+    <button type="button" class="layui-btn cover" id="control_video_button" style="margin-left:250px">上传视频</button>
+    <button type="button" class="layui-btn layui-btn-danger cover" id="control_video_del" >删除视频</button>
+    <input type="hidden" id="control_video" value="{$detail.control_video}" name="control_video"/>
+    <input type="hidden" id="temp_url_id" value="" name="temp_url_id"/>
+
+    <div class="layui-form-item" >
+    <label class="layui-form-label"></label>
     <div class="layui-input-block">
-      <textarea placeholder="请输入内容"  class="layui-textarea" id="UserInput" name="InputText"></textarea>
-	<div>
-		<p>提示：请用英文文本作答，输入目标的面部特征</br>
-		</p>
-		<div class="layui-form">
-  <table class="layui-table">
-    <colgroup>
-      <col width="150">
-      <col width="150">
-      <col width="150">
-      <col width="200">
-    </colgroup>
-    <thead>
-      <tr>
-        <td>发色</td>
-        <td>脸型</td>
-        <td>眼睛颜色</td>
-        <td>胡子形状</td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Black(黑发)</td>
-        <td>Round(圆脸)</td>
-        <td>Black(黑眼睛)</td>
-        <td>Goatee(山羊胡)</td>
-      </tr>
-      <tr>
-        <td>Brown(棕发)</td>
-        <td>Square(方脸)</td>
-        <td>Blue(蓝眼睛)</td>
-        <td>Mutton Chops(羊排络腮胡)</td>
-      </tr>
-      <tr>
-        <td>Blonde(金发)</td>
-        <td>Diamond(菱形脸)</td>
-        <td>Brown(棕眼睛)</td>
-        <td>Handlebar(八字胡)</td>
-      </tr>
-      <tr>
-        <td>Red(红发)</td>
-        <td>Oval(椭圆形脸)</td>
-        <td>Green(绿眼睛)</td>
-        <td>Short Boxed Beard(短箱式胡)</td>
-      </tr>
-      <tr>
-        <td>White(白发)</td>
-        <td>Heart(心形脸)</td>
-        <td>Gold(金眼睛)</td>
-        <td>Van Dyke(凡戴克式)</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="layui-form">
-    <table class="layui-table">
-      <colgroup>
-        <col width="150">
-        <col width="150">
-        <col width="150">
-        <col width="200">
-      </colgroup>
-      <thead>
-        <tr>
-          <td>年龄</td>
-          <td>性别</td>
-          <td>胖瘦</td>
-          <td>眼皮形状</td>
-        </tr> 
-      </thead>
-      <tbody>
-        <tr>
-          <td>old(老)</td>
-          <td>male(男)</td>
-          <td>fat(胖)</td>
-          <td>Single Eyelid(单眼皮)</td>
-        </tr>
-        <tr>
-          <td>young(年轻)</td>
-          <td>female(女)</td>
-          <td>thin(瘦)</td>
-          <td>Double Eyelid(双眼皮)</td>
-        </tr>
- 
-      </tbody>
-    </table>
-  </div>
-</div>
-	</div>
+        <video src="{$detail.control_video}" controls="controls" id="control_video_demo" style="margin-top:20px;height:250px">
+        </video>
+        <p id="demoText"></p>
+    </div>
     </div>
   </div>
-  <div class="layui-form-item">
-    <div class="layui-input-block">
-      <!-- <button type="submit" class="layui-btn" lay-submit="" lay-filter="Demo1">立即提交</button> -->
-      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-    </div>
-  </div>
-</form>
-</div >
-
-<div class="layui-upload-drag" id="UploadPic" style="width:40%;height:550px;float:left">
-        <i class="layui-icon"></i>
-        <p>点击上传，或将文件拖拽到此处</p>
-        <div class="layui-hide" id="uploadDemoView">
-        <hr>
-        <img src="" alt="上传成功后渲染" style="max-height: 500px;max-width: 500px">
-    </div>
-</div>
 </div>
 
-
-
-<div class="toast">
+  <div class="toast">
   <span class="load"></span>
   <span>加载中...</span>
+  </div>
+
+  
 </div>
 
-
-<div style="width: 370px;margin-top:20px auto;margin:auto;">
-  <!-- <a href="resizer.html" class="layui-btn layui-btn-fluid">生成人脸</a> -->
-  <button type="submit" class="layui-btn layui-btn-fluid" lay-submit="" lay-filter="GenButton">生成人脸</button>
+<div style="width: 370px;margin:40px auto">
+  <button id="MatchButoon" type="button" class="layui-btn layui-btn-fluid">开始匹配</button>
 </div>
 
-
+<div class="layui-hide" id="MatchResult">
+    <hr>
+</div>
 <script src="./layui/layui.js" charset="utf-8"></script>
 <script src="./layui/jquery-3.6.0.js" charset="utf-8"></script>
 <script>
-  
-//上传图片至七牛云，并获取图片URL
-var token = 'h1E1mid8K0zRr848y7uTIPi18GyXnDuzkaLkmW4C:2tfT7r_9TJJj1Ksknp65g9TQgM8=:eyJzY29wZSI6InhpbnhpYW5xdWFuZGFzYWkiLCJkZWFkbGluZSI6MTYzOTUxMDUyMH0='
+
+  // 读取数据
+// var PicURL = localStorage.getItem('picURL');  //获取本地存储中picURL的值
+// console.log(PicURL);
 var PicURL=null;
-layui.use(['upload', 'element', 'layer'], function(){
-        var $ = layui.jquery
-        ,upload = layui.upload
-        ,element = layui.element
-        ,layer = layui.layer;
-         
-        
-        upload.render({
-           elem: '#UploadPic'
-           ,url: 'http://upload-z2.qiniu.com/' 
-           ,data: {'token':token
-           }
-           ,accept: 'images' //普通文件
-           ,done: function(res){
-           //如果上传失败
-              if(res.key!=null){
-              PicURL='http://xinan.ziqiang.net.cn/'+res['key'];
-              layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', PicURL);
-              console.log(res);
-              console.log(PicURL) 
-              }
-              else console.log('Failed!')
-              }
-         });
+function GetUrlPara(){
+    var url = document.location.toString();//获取当前URL
+    console.log(url);
+	if (url.indexOf("?")!= -1) {  //判断URL？后面不为空
+    var arrUrl = url.split("?");//分割？
+    var para = arrUrl[1];//获取参数部分
+    console.log('get para');
+    if(para)//判断传入的参数部分不为空
+    {
+    	var arr = para.split("=");//分割=
+        var res = arr[1];//获取参数的值
+        console.log(res);
+        return res;
+    }   
+	}
+	return null;
+}
 
-    });
-// var facetext=$("textarea[name=InputText]").val();
-// console.log(facetext);
-//GenButton
-layui.use('form', function(){
-  var form = layui.form;
+PicURL=GetUrlPara();
+console.log(PicURL);
+// var PicURL="http://xinan.ziqiang.net.cn/AsFace.jpg"; //调试语句
+var VideoURL = null;
+var token ='h1E1mid8K0zRr848y7uTIPi18GyXnDuzkaLkmW4C:2tfT7r_9TJJj1Ksknp65g9TQgM8=:eyJzY29wZSI6InhpbnhpYW5xdWFuZGFzYWkiLCJkZWFkbGluZSI6MTYzOTUxMDUyMH0=';
 
-  //监听提交
-  form.on('submit(GenButton)', function(data){
-    $('.toast').css({display: 'flex'})
-    $.ajax({ 
-				url:'http://localhost:8000/MaskApp/facegen/',   
-				method:'post',   
-				data:{
-          facetext:$("textarea[name=InputText]").val(),
-          img:PicURL
-        },    
-				dataType:'JSON',    
-				success:function(res){  
+$("#IMG1").attr("src",PicURL);
+
+layui.use(['upload','form'], function(){
+  var form = layui.form
+      ,$ = layui.jquery
+      ,upload = layui.upload;
+
+var uploadInst = upload.render({
+              elem: '#control_video_button', //绑定元素
+              url: 'http://upload-z2.qiniu.com/',//上传接口
+              accept: 'video',
+              data: {'token':token}
+              ,before: function(obj){
+                  //预读本地文件示例，不支持ie8
+                  obj.preview(function(index, file, result){
+                      $('#control_video_demo').attr('src', result);  
+                      $('#control_video_demo').css('display','block');
+                      $('#control_video_del').css('display','inline');
+                  });
+              },
+              done: function(res){
+                  console.log(res);
+
+              VideoURL='http://xinan.ziqiang.net.cn/'+res['key'];    
+              console.log(VideoURL)
+              }
+          });
+
+          $('#control_video_del').click(function(){
+              $('#control_video_demo').css('display','none');
+              $('#control_video_del').css('display','none');
+              $('#control_video').val('');
+          })
+});
+
+$('#MatchButoon').on('click',function(){
+  $('.toast').css({display: 'flex'})
+      $.ajax({
+         type:'post',
+         data:{
+          image_url:PicURL,
+          video_url:VideoURL
+          }, //参数
+         dataType:'json', 
+         url: "http://localhost:8000/MaskApp/facemat/",
+         success: function(res) {
           $('.toast').css({display: 'none'})
-          var code = res["Error Code"].toString();
-          var msg = res["Error Message"].toString();
-          // var data = res["data"].toString();
-          
-					if(code =='0'){   
-            // console.log(msg);          
-					layer.msg("提交成功",{icon: 1, time: 3000},function(){window.location.href = "resizer.html";}); //提交成功后跳转页面
-					}   
-          else console.log(msg);      
-					},
-           error:function(res){
+            var code = res["Error Code"].toString();
+            var msg = res["Error Message"].toString();
+            var MatchRes = JSON.parse(res["data"].toString());  //转为json格式
+
+            var score = MatchRes['match score'];
+            var m_result = MatchRes['match result'];
+            var faceimg = MatchRes['ExampleFace'];       
+            var facevideo = MatchRes['SearchFace'];
+            
+            if(code =="0"){
+              console.log(m_result);  
+            
+              console.log(faceimg);
+              console.log(facevideo);
+              layer.open({
+                type:2,
+                title:"匹配结果",
+                // skin: 'layui-layer-rim',
+                area:['800px','550px'],
+                fix:false,
+                content:"match_result.html",
+            });
+           
+            setTimeout(function(){
+              var frame = document.getElementById('layui-layer-iframe1'); 
+            // console.log(data);
+            var data ={
+                score:score,
+                faceimg:faceimg,
+                facevideo:facevideo
+            }
+            var output=2;
+            output=frame.contentWindow.postMessage(JSON.stringify(data), '*');
+            console.log(output);
+            },1000)
+            // var output=2;
+            // var output = window.postMessage(JSON.stringify(data), '*');
+            // console.log(output);
+            // Window.postMessage(JSON.stringify(data), '*');   
+
+           }
+            else {            
+             layer.alert(msg);
+            }
+         },
+         error:function(res){
              console.log('响应失败！');
-         }   
-					
-			});
-    //
-    });
-  });
+         }
+      })
+    })
 
-// 写入数据(调试语句)
-// PicURL='./img/test.ori.jpg';
-// localStorage.setItem('picURL',PicURL);  //将变量PicURL(值为PicURL)存储至本地
-// console.log(PicURL);  
 </script>
-
 
 </body>
 </html>
