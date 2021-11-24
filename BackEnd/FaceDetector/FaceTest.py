@@ -11,6 +11,7 @@ from FaceDetector.Faceutils import VideoSplit
 from FaceDetector.Faceutils import upload_pic_to_qiniu
 import cv2
 import base64
+import time
 
 def FaceSearch(exampleimg: str, searchvid: str):
     '''
@@ -30,13 +31,15 @@ def FaceSearch(exampleimg: str, searchvid: str):
     exp_res = FaceExtract(exampleimg, 'url', 'Example')
     expface = exp_res['Data']['ExampleFaces']
     exp_error_code = exp_res['Error Code']
+    time_str = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     if exp_error_code != 0:
         message['Error code'] = exp_error_code
         message['Error Message'] = '示例人脸检测失败'
         message['Data'] = None
     else:
         fullexpface = exp_res['Data']['FullFace']
-        fullexpurl = upload_pic_to_qiniu('ExampleFace.jpg', fullexpface)
+        full_image_name = 'ExampleFace' + time_str + '.jpg'
+        fullexpurl = upload_pic_to_qiniu(full_image_name, fullexpface)
     # 将每一秒中的一帧临时写入文件夹，每帧都写入数量太大
     fps = srhvidframes[3]
     need_frame = srhvidframes[0][::int(fps)]
@@ -81,7 +84,8 @@ def FaceSearch(exampleimg: str, searchvid: str):
         cv2.rectangle(high_frame, (lefttopx, lefttopy), (rightbottomx, rightbottomy), (0, 255, 0), 2)
         full_face_path = os.path.join(basepath, 'FaceStatic', 'FullFace', 'Search.jpg')
         cv2.imwrite(full_face_path, high_frame)
-        high_url = upload_pic_to_qiniu('High_score_Face.jpg', full_face_path)   
+        high_image_name = 'High_score_Face' + time_str + '.jpg'
+        high_url = upload_pic_to_qiniu(high_image_name, full_face_path)   
         message['Error code'] = 0
         message['Error Message'] = 'SUCCESS'
         if high_score >= 80:
